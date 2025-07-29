@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home - DC256</title>
+  <link rel="icon" href="/mnt/data/DC256_Text.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+  <style>
+    :root {
+      --main-bg: #000000;
+      --primary-text: #9a9da2;
+      --highlight: #8dff95;
+      --accent: #499965;
+      --border-accent: #8dff95;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      background-color: var(--main-bg);
+      color: var(--primary-text);
+      overflow-x: hidden;
+    }
+
+    header {
+      background-color: #111;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--border-accent);
+    }
+
+    header img {
+      height: 60px;
+    }
+
+    nav a {
+      margin: 0 1rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--highlight);
+    }
+
+    .hero {
+      background: radial-gradient(circle at top, #203a43, #0f2027);
+      padding: 5rem 2rem;
+      text-align: center;
+      animation: backgroundPulse 10s infinite alternate;
+    }
+
+    @keyframes backgroundPulse {
+      0% { background-color: #0f2027; }
+      100% { background-color: #1a1a1a; }
+    }
+
+    .hero img {
+      max-height: 300px;
+      filter: drop-shadow(0 0 10px var(--accent));
+    }
+
+    .typing {
+  font-size: 2rem;
+  color: var(--highlight);
+  white-space: nowrap;
+  overflow: hidden;
+  margin: 0 auto 1rem auto;
+  display: inline-block;
+  min-height: 2.4rem;
+}
+
+    
+  @keyframes typingEffect {
+  from { width: 0; }
+  to { width: 21ch; }
+}
+@keyframes blink {
+  0%, 100% { border-color: var(--highlight); }
+  50% { border-color: transparent; }
+}
+    
+
+    .cta {
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-bottom: 2rem;
+    }
+
+    .terminal {
+      background-color: #111;
+      padding: 2rem;
+      margin: 3rem auto;
+      max-width: 600px;
+      border: 1px solid var(--accent);
+      font-family: monospace;
+      color: var(--accent);
+      box-shadow: 0 0 20px var(--border-accent);
+    }
+
+    .terminal span {
+      color: var(--highlight);
+    }
+
+    .terminal-input {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .terminal-input input {
+      flex: 1;
+      background: black;
+      border: none;
+      color: var(--highlight);
+      font-family: monospace;
+      padding: 0.3rem;
+    }
+
+    .terminal-output {
+      margin-top: 1rem;
+      white-space: pre-wrap;
+    }
+
+    footer {
+      background-color: #111;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      border-top: 2px solid var(--border-accent);
+    }
+
+    .socials i {
+      margin: 0 1rem;
+      font-size: 1.5rem;
+      color: var(--accent);
+    }
+
+    .socials i:hover {
+      color: var(--highlight);
+    }
+  .cursor {
+  display: inline-block;
+  animation: blink 1s step-end infinite;
+  color: var(--highlight);
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+</style>
+  <style>
+    canvas.matrix {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      opacity: 0.35;
+      mask-image: linear-gradient(to bottom, transparent, black 60%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black 60%);
+    }
+    .glitch {
+      color: var(--highlight);
+      text-shadow: 0.05em 0 0 red, -0.05em 0 0 blue;
+      animation: glitch 1s infinite;
+    }
+    @keyframes glitch {
+      0% { text-shadow: 0.05em 0 0 red, -0.05em 0 0 blue; }
+      25% { text-shadow: -0.05em 0 0 green, 0.05em 0 0 cyan; }
+      50% { text-shadow: 0.05em 0 0 yellow, -0.05em 0 0 magenta; }
+      100% { text-shadow: 0.05em 0 0 red, -0.05em 0 0 blue; }
+    }
+  </style>
+  <style>
+    .scanlines {
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.07) 0,
+        rgba(255, 255, 255, 0.03) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      z-index: 1;
+      mix-blend-mode: overlay;
+      animation: flicker 0.4s infinite linear;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 0.15; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="bootScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; color: #8dff95; font-family: monospace; font-size: 1rem; padding: 2rem; z-index: 9999; overflow: auto; opacity: 1; transition: opacity 1s ease-in-out;"></div>
+  <canvas class="matrix"></canvas>
+  <header data-aos="fade-down">
+    <img src="images/DC256_Text.png" alt="DC256 Logo">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="events.html">Events</a>
+      <a href="contact.html">Contact</a>
+      <a href="https://dc256.printify.me/products" target="_blank">Shop</a>
+    </nav>
+  </header>
+
+  <section class="hero" style="position: relative; overflow: hidden; background: linear-gradient(to bottom, #203a43, #0f2027, #000000); text-align: center; display: flex; flex-direction: column; align-items: center;">
+    <canvas id="particles" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></canvas>
+    <div class="scanlines"></div>
+    <img src="images/racoon.webp" alt="DC256 Mascot" style="max-height: 300px; filter: drop-shadow(0 0 10px var(--accent)); display: block; margin: 0 auto 2rem auto;">
+    <div class="typing" style="display: flex; justify-content: center; align-items: center;"><span id="typingHeader"></span><span class="cursor">|</span></div>
+    <div class="cta">DEF CON Group – Huntsville, Alabama</div>
+    
+  </section>
+
+  <section class="terminal" data-aos="fade-up">
+    <p><span>user@dc256</span>:~$</p>
+    <div class="terminal-input">
+      <span style="color:var(--highlight)">></span><input type="text" id="commandInput" placeholder="Type a command...">
+    </div>
+    <div class="terminal-output" id="terminalOutput"></div>
+  </section>
+
+
+<section class="terminal" data-aos="fade-up" id="about">
+  <h2 style="color: var(--highlight);">About DC256</h2>
+  <p>DC256 is the Huntsville, Alabama DEF CON Group — a local meetup for hackers, tinkerers, and information security enthusiasts. We’re an open group welcoming everyone from seasoned professionals to curious newcomers.</p>
+  <p>Our mission is to share knowledge, promote hands-on experimentation, and build a strong local security community. Expect workshops, lightning talks, CTFs, and general chaos.</p>
+</section>
+
+<section class="terminal" data-aos="fade-up" id="events">
+  <h2 style="color: var(--highlight);">Upcoming Events</h2>
+  <p>Join us on the 3rd Friday of every month at 6PM for our regular meetup at GigaParts in Huntsville.</p>
+  <ul>
+    <li><strong>August Meetup:</strong> August 16, 2025 — Topic: WiFi Hacking 101</li>
+    <li><strong>September Meetup:</strong> September 20, 2025 — Topic: Lockpicking Village + CTF</li>
+  </ul>
+  <p>Follow us on Discord and Twitter for the latest event announcements.</p>
+</section>
+
+
+<section class="terminal" data-aos="fade-up" style="text-align: center; padding: 4rem 2rem;">
+  <h2 style="color: var(--highlight); margin-bottom: 1.5rem;">Join the DC256 Discord</h2>
+  <a href="https://discord.gg/7DgPkkJyCH" target="_blank" style="
+    display: inline-block;
+    padding: 1rem 2rem;
+    background-color: var(--accent);
+    color: black;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border: 2px solid var(--highlight);
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 0 10px var(--highlight);
+  " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    Connect on Discord <i class="fab fa-discord"></i>
+  </a>
+</section>
+
+  <section class="terminal" data-aos="fade-up" id="contact">
+    <h2 style="color: var(--highlight);">Contact Us</h2>
+    <p>Email: <a href="mailto:info@dc256.org" style="color: var(--highlight);">info@dc256.org</a></p>
+    <p>Meetups held every 3rd Friday @ 6PM at:</p>
+    <p><strong>GigaParts</strong><br>6123 University Dr, Huntsville, AL 35806</p>
+    <iframe class="map" src="https://www.google.com/maps?q=GigaParts+Huntsville+AL&output=embed" width="100%" height="300" style="border:2px solid var(--accent); margin-top: 1rem;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </section>
+
+  
+
+  <footer data-aos="fade-up">
+    <p>&copy; 2025 DC256 - Huntsville DEF CON Group | Built by hackers, for hackers.</p>
+    <p>Email us: <a href="mailto:info@dc256.org" style="color:var(--highlight)">info@dc256.org</a></p>
+    <p>Meetings: 3rd Friday of each month @ 6PM — GigaParts Huntsville</p>
+    <div class="socials">
+      <a href="https://x.com/defcon256" target="_blank"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.linkedin.com/company/dc256" target="_blank"><i class="fab fa-linkedin"></i></a>
+      <a href="https://discord.gg/7DgPkkJyCH" target="_blank"><i class="fab fa-discord"></i></a>
+      
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // Typing effect for header
+    const headerText = "Welcome to DC256 ";
+    const headerElement = document.getElementById("typingHeader");
+    let charIndex = 0;
+    function typeHeader() {
+      if (charIndex < headerText.length) {
+        headerElement.textContent += headerText.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeHeader, 120);
+      } else {
+        headerElement.classList.add("glitch");
+      }
+    }
+    typeHeader();
+  </script>
+  <script>
+    AOS.init();
+
+    const terminalOutput = document.getElementById('terminalOutput');
+    const commandInput = document.getElementById('commandInput');
+
+    const commands = {
+      "whoami": "You're a hacker, tinkerer, and infosec enthusiast. Welcome home.",
+      "uptime": "DC256 has been operating since 2018.",
+      "ls": "about.html  events.html  contact.html  shop/", 
+      "pwd": "/var/www/dc256",
+      "cd": "Nice try. You're already in the best directory.",
+      "cat flag.txt": "FLAG{R34L_H4CK3R_V1B3S}",
+      "date": new Date().toString(),
+      "clear": "clear",
+      "help": "Try: whoami, uptime, ls, pwd, cd, cat flag.txt, date, clear, help, dc256",
+      "dc256": "DEF CON Group 256 - Meet us 3rd Fridays @ GigaParts Huntsville 6PM"
+    };
+
+    commandInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        const input = commandInput.value.trim();
+        commandInput.value = '';
+
+        if (input === '') return;
+        const pre = document.createElement('pre');
+        pre.textContent = `> ${input}`;
+        terminalOutput.appendChild(pre);
+
+        const response = commands[input] || `command not found: ${input}`;
+
+        if (response === "clear") {
+          terminalOutput.innerHTML = '';
+        } else {
+          const res = document.createElement('pre');
+          res.textContent = response;
+          terminalOutput.appendChild(res);
+        }
+        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+      }
+    });
+  </script>
+  <script>
+    // Matrix effect
+    const canvas = document.querySelector('canvas.matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const letters = "01";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#8dff95';
+      ctx.font = fontSize + "px monospace";
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+    setInterval(drawMatrix, 33);
+  </script>
+  <script>
+  // Subtle Particle Grid
+  const particleCanvas = document.getElementById('particles');
+  const pCtx = particleCanvas.getContext('2d');
+  let particles = [];
+
+  function resizeParticlesCanvas() {
+    particleCanvas.width = particleCanvas.offsetWidth;
+    particleCanvas.height = particleCanvas.offsetHeight;
+  }
+
+  function createParticles() {
+    const count = 75;
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * particleCanvas.width,
+        y: Math.random() * particleCanvas.height,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3
+      });
+    }
+  }
+
+  function updateParticles() {
+    pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+    for (let p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < 0 || p.x > particleCanvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > particleCanvas.height) p.vy *= -1;
+
+      pCtx.beginPath();
+      pCtx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+      pCtx.fillStyle = 'rgba(141, 255, 149, 0.4)';
+      pCtx.fill();
+    }
+
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        let dx = particles[i].x - particles[j].x;
+        let dy = particles[i].y - particles[j].y;
+        let dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 80) {
+          pCtx.beginPath();
+          pCtx.moveTo(particles[i].x, particles[i].y);
+          pCtx.lineTo(particles[j].x, particles[j].y);
+          pCtx.strokeStyle = 'rgba(141, 255, 149, 0.1)';
+          pCtx.stroke();
+        }
+      }
+    }
+
+    requestAnimationFrame(updateParticles);
+  }
+
+  resizeParticlesCanvas();
+  createParticles();
+  updateParticles();
+  window.addEventListener('resize', () => {
+    resizeParticlesCanvas();
+    particles = [];
+    createParticles();
+  });
+</script>
+<script>
+  const bootMessages = [
+    "Booting DC256 OS v3.1.4...",
+    "[OK] Initializing terminal subsystem...",
+    "[OK] Loading DEF CON protocols...",
+    "[OK] Establishing secure connection...",
+    "[OK] Authenticating node...",
+    "[OK] Mounting /home/dc256/...",
+    "[OK] Launching hacker interface...",
+    "Welcome to DC256. Engage."  
+  ];
+
+  const bootScreen = document.getElementById('bootScreen');
+  let bootIndex = 0;
+
+  function typeBootMessage() {
+    if (bootIndex < bootMessages.length) {
+      const line = document.createElement('div');
+      line.textContent = bootMessages[bootIndex];
+      bootScreen.appendChild(line);
+      bootIndex++;
+      setTimeout(typeBootMessage, 300);
+    } else {
+      setTimeout(() => {
+        bootScreen.style.opacity = '0';
+        setTimeout(() => { bootScreen.style.display = 'none'; }, 500);
+      }, 1000);
+    }
+  }
+  window.addEventListener('load', () => {
+  typeBootMessage();
+  // Fallback to hide the boot screen after 7 seconds
+  setTimeout(() => {
+    bootScreen.style.display = 'none';
+  }, 7000);
+});
+</script>
+</body>
+
+</html>
