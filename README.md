@@ -27,9 +27,9 @@ Welcome to the [DC256](https://dc256.org) web portal! This project is a hacker-t
   ├── scripts/            # Optional: JS (if split out)
   ├── README.md           # You are here!
   └── (other static assets)
-
-</details>
 ```
+</details>
+
 
 ---
 
