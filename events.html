@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events - DC256</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+  background-color: #000;
+  color: #9a9da2;
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+    header {
+      background-color: #111;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #8dff95;
+    }
+    nav a {
+      margin: 0 1rem;
+      color: #499965;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: #8dff95;
+    }
+    .events-section {
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+    .events-section h1 {
+      color: #8dff95;
+    }
+    .event {
+      border: 1px solid #499965;
+      padding: 1rem;
+      margin: 1rem 0;
+      background-color: #111;
+      box-shadow: 0 0 10px #499965;
+    }
+    .event img {
+      max-width: 100%;
+      border: 2px solid #8dff95;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <img src="images/SaturnV.png" alt="DC256 Rocket" style="position: fixed; top: 0; left: 0; height: 100%; width: auto; z-index: -1; opacity: 0.3;">
+  <header>
+    <img src="images/DC256_Text.png" alt="DC256 Logo" style="height: 50px;">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="events.html">Events</a>
+      <a href="contact.html">Contact</a>
+      <a href="https://dc256.printify.me/products" target="_blank">Shop</a>
+    </nav>
+  </header>
+  <section class="events-section">
+    <h1>Upcoming Events</h1>
+    <div class="event">
+      <h2>August Workshop – SDR Fundamentals: A Beginners Guide to the HackRF</h2>
+      <p>Date: August 15, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
+      <img src="images/flyer-august.png" alt="Flyer for August event">
+    </div>
+    <div class="event">
+      <h2>September Meetup – TBD</h2>
+      <p>Date: September 19, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
+      <img src="images/flyer-september.png" alt="Flyer for September event">
+    </div>
+    <!-- Add new events below this line -->
+  </section>
+<footer style="background-color: #111; text-align: center; padding: 2rem; font-size: 0.9rem; border-top: 2px solid #8dff95; margin-top: auto;">
+  <p>&copy; 2025 DC256 - Huntsville DEF CON Group | Built by hackers, for hackers.</p>
+  <p>Email us: <a href="mailto:info@dc256.org" style="color:#8dff95">info@dc256.org</a></p>
+  <p>Meetings: 3rd Friday of each month @ 6PM — GigaParts Huntsville</p>
+  <div class="socials">
+    <a href="https://x.com/defcon256" target="_blank"><i class="fab fa-twitter" style="margin: 0 1rem; font-size: 1.5rem; color: #499965;"></i></a>
+    <a href="https://www.linkedin.com/company/dc256" target="_blank"><i class="fab fa-linkedin" style="margin: 0 1rem; font-size: 1.5rem; color: #499965;"></i></a>
+    <a href="https://discord.gg/7DgPkkJyCH" target="_blank"><i class="fab fa-discord" style="margin: 0 1rem; font-size: 1.5rem; color: #499965;"></i></a>
+  </div>
+</footer>
+</body>
+</html>
