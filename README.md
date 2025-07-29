@@ -7,23 +7,28 @@ Welcome to the [DC256](https://dc256.org) web portal! This project is a hacker-t
 ---
 
 ## 🗂 Project Structure
-<details> <summary>Directory Tree</summary>
-dc256-website/
-│
-├── index.html # Main landing page with terminal
-├── about.html # About DC256
-├── events.html # Event info and meetups
-├── contact.html # Contact & location details
-├── images/ # Logos, mascot, and backgrounds
-│ ├── DC256_Text.png
-│ ├── racoon.webp
-│ └── (other graphics)
-├── shop/ # Optional: merch/shop section or redirect
-├── styles/ # Optional: external CSS (if split out)
-├── scripts/ # Optional: JS (if split out)
-├── README.md # You are here!
-└── (other static assets)
-</details>
+
+<details>
+  <summary>Directory Tree</summary>
+
+  ```text
+  dc256-website/
+  │
+  ├── index.html          # Main landing page with terminal
+  ├── about.html          # About DC256
+  ├── events.html         # Event info and meetups
+  ├── contact.html        # Contact & location details
+  ├── images/             # Logos, mascot, and backgrounds
+  │   ├── DC256_Text.png
+  │   ├── racoon.webp
+  │   └── (other graphics)
+  ├── shop/               # Optional: merch/shop section or redirect
+  ├── styles/             # Optional: external CSS (if split out)
+  ├── scripts/            # Optional: JS (if split out)
+  ├── README.md           # You are here!
+  └── (other static assets)
+
+</details>```
 
 ---
 
