@@ -6,6 +6,10 @@ Welcome to the [DC256](https://dc256.org) web portal! This project is a hacker-t
 
 ---
 
+![DC256 Terminal](images/DC256_Text.png)
+
+---
+
 ## 🗂 Project Structure
 
 <details>
@@ -93,12 +97,6 @@ For security and community reasons, we only grant direct repo access to trusted 
 
 MIT License  
 Feel free to fork, remix, and reuse for your own hacker or DEF CON group—just keep a credit to DC256!
-
----
-
-## 📸 Screenshots
-
-![DC256 Terminal](images/DC256_Text.png)
 
 ---
 
