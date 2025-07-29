@@ -28,7 +28,8 @@ Welcome to the [DC256](https://dc256.org) web portal! This project is a hacker-t
   ├── README.md           # You are here!
   └── (other static assets)
 
-</details>```
+</details>
+```
 
 ---
 
