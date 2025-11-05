@@ -7,15 +7,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
-  background-color: #000;
-  color: #9a9da2;
-  font-family: 'Courier New', monospace;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+      background-color: #000;
+      color: #9a9da2;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
     header {
       background-color: #111;
       padding: 1rem 2rem;
@@ -40,6 +40,8 @@
     }
     .events-section h1 {
       color: #8dff95;
+      border-bottom: 1px solid #499965;
+      padding-bottom: 0.5rem;
     }
     .event {
       border: 1px solid #499965;
@@ -57,6 +59,7 @@
 </head>
 <body>
   <img src="images/SaturnV.png" alt="DC256 Rocket" style="position: fixed; top: 0; left: 0; height: 100%; width: auto; z-index: -1; opacity: 0.3;">
+  
   <header>
     <img src="images/DC256_Text.png" alt="DC256 Logo" style="height: 50px;">
     <nav>
@@ -67,29 +70,36 @@
       <a href="https://dc256.printify.me/products" target="_blank">Shop</a>
     </nav>
   </header>
+
+  <!-- Upcoming Events -->
   <section class="events-section">
     <h1>Upcoming Events</h1>
-      <div class="event">
-        <h2>November Meetup – Matthew McDougal AKA Doogie – Bluetooth Low Energy (BLE) Hacking Workshop</h2>
-        <p>Date: November 21, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-        <img src="images/Doogie_BLE_Hacking_Flyer.png">
+    <div class="event">
+      <h2>November Meetup – Matthew McDougal AKA Doogie – Bluetooth Low Energy (BLE) Hacking Workshop</h2>
+      <p>Date: November 21, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
+      <img src="images/Doogie_BLE_Hacking_Flyer.png" alt="Flyer for November 2025 BLE Hacking Workshop">
     </div>
+  </section>
+
+  <!-- Previous Events -->
+  <section class="events-section">
+    <h1>Previous Events</h1>
     <div class="event">
       <h2>October Meetup – Hacking Fruit: Exploiting Juice Shop</h2>
       <p>Date: October 17, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
       <img src="images/Brad Causey Juice Shop Flyer.png" alt="Flyer for October event">
     </div>
-    <!-- Add new events below this line -->
   </section>
-<footer style="background-color: #111; text-align: center; padding: 2rem; font-size: 0.9rem; border-top: 2px solid #8dff95; margin-top: auto;">
-  <p>&copy; 2025 DC256 - Huntsville DEF CON Group | Built by hackers, for hackers.</p>
-  <p>Email us: <a href="mailto:info@dc256.org" style="color:#8dff95">info@dc256.org</a></p>
-  <p>Meetings: 3rd Friday of each month @ 6PM — GigaParts Huntsville</p>
-  <div class="socials">
-    <a href="https://x.com/defcon256" target="_blank"><i class="fab fa-twitter" style="margin: 0 1rem; font-size: 1.5rem; color: #499965;"></i></a>
-    <a href="https://www.linkedin.com/company/dc256" target="_blank"><i class="fab fa-linkedin" style="margin: 0 1rem; font-size: 1.5rem; color: #499965;"></i></a>
-    <a href="https://discord.gg/7DgPkkJyCH" target="_blank"><i class="fab fa-discord" style="margin: 0 1rem; font-size: 1.5rem; color: #499965;"></i></a>
-  </div>
-</footer>
+
+  <footer style="background-color: #111; text-align: center; padding: 2rem; font-size: 0.9rem; border-top: 2px solid #8dff95; margin-top: auto;">
+    <p>&copy; 2025 DC256 - Huntsville DEF CON Group | Built by hackers, for hackers.</p>
+    <p>Email us: <a href="mailto:info@dc256.org" style="color:#8dff95">info@dc256.org</a></p>
+    <p>Meetings: 3rd Friday of each month @ 6PM — GigaParts Huntsville</p>
+    <div class="socials">
+      <a href="https://x.com/defcon256" target="_blank"><i class="fab fa-twitter" style="margin: 0 1rem; font-size: 1.5rem; color: #499965;"></i></a>
+      <a href="https://www.linkedin.com/company/dc256" target="_blank"><i class="fab fa-linkedin" style="margin: 0 1rem; font-size: 1.5rem; color: #499965;"></i></a>
+      <a href="https://discord.gg/7DgPkkJyCH" target="_blank"><i class="fab fa-discord" style="margin: 0 1rem; font-size: 1.5rem; color: #499965;"></i></a>
+    </div>
+  </footer>
 </body>
 </html>
