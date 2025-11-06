@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Events - DC256</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
   <style>
     body {
       background-color: #000;
@@ -24,24 +25,11 @@
       align-items: center;
       border-bottom: 2px solid #8dff95;
     }
-    nav a {
-      margin: 0 1rem;
-      color: #499965;
-      text-decoration: none;
-      font-weight: bold;
-    }
+    nav a { margin: 0 1rem; color: #499965; text-decoration: none; font-weight: bold; }
     nav a:hover { color: #8dff95; }
 
-    .events-section {
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
-    }
-    .events-section h1 {
-      color: #8dff95;
-      border-bottom: 1px solid #499965;
-      padding-bottom: 0.5rem;
-    }
+    .events-section { padding: 2rem; max-width: 800px; margin: auto; }
+    .events-section h1 { color: #8dff95; border-bottom: 1px solid #499965; padding-bottom: 0.5rem; }
 
     .event {
       border: 1px solid #499965;
@@ -56,66 +44,64 @@
       margin-top: 0.5rem;
       display: block;
     }
-    .sponsor {
-      font-style: italic;
-      color: #8dff95;
-      margin-top: 0.5rem;
-      font-weight: bold;
-    }
+    .sponsor { font-style: italic; color: #8dff95; margin-top: 0.5rem; font-weight: bold; }
 
-    /* Collapsible archive controls */
+    /* Collapsible Archive */
     .archive-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      background: #0d0d0d;
-      border: 1px solid #499965;
-      padding: 0.75rem 1rem;
-      margin: 2rem auto 0;
-      max-width: 800px;
-      cursor: pointer;
-      user-select: none;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      background: #0d0d0d; border: 1px solid #499965; padding: 0.75rem 1rem;
+      margin: 2rem auto 0; max-width: 800px; cursor: pointer; user-select: none;
       box-shadow: 0 0 10px rgba(77, 255, 128, 0.2);
     }
-    .archive-header h2 {
-      color: #8dff95;
-      margin: 0;
-      font-size: 1.25rem;
-    }
-    .archive-header .chevron {
-      transition: transform 0.2s ease;
-    }
-    .archive-header[aria-expanded="true"] .chevron {
-      transform: rotate(180deg);
-    }
+    .archive-header h2 { color: #8dff95; margin: 0; font-size: 1.25rem; }
+    .archive-header .chevron { transition: transform 0.2s ease; }
+    .archive-header[aria-expanded="true"] .chevron { transform: rotate(180deg); }
     .archive-panel {
-      max-width: 800px;
-      margin: 0 auto;
-      overflow: hidden;
-      transition: grid-template-rows 0.25s ease, opacity 0.25s ease;
-      display: grid;
-      grid-template-rows: 0fr; /* collapsed */
-      opacity: 0.6;
+      max-width: 800px; margin: 0 auto; overflow: hidden; transition: grid-template-rows 0.25s ease, opacity 0.25s ease;
+      display: grid; grid-template-rows: 0fr; opacity: 0.6;
     }
-    .archive-panel[data-open="true"] {
-      grid-template-rows: 1fr; /* expanded */
-      opacity: 1;
-    }
-    .archive-panel > .archive-content {
-      overflow: hidden;
-    }
+    .archive-panel[data-open="true"] { grid-template-rows: 1fr; opacity: 1; }
+    .archive-panel > .archive-content { overflow: hidden; }
+    .archive-header:focus, .archive-header:focus-visible { outline: 2px solid #8dff95; outline-offset: 2px; }
 
-    /* Small helper for focus visibility */
-    .archive-header:focus { outline: 2px solid #8dff95; outline-offset: 2px; }
-    .archive-header:focus-visible { outline: 2px solid #8dff95; outline-offset: 2px; }
+    /* --- Unique Gallery: Lockpicking Village (2025 NCS) --- */
+    .lpv-wrap { margin-top: 0.75rem; }
+    .lpv-strip {
+      display: flex; gap: 0.75rem; overflow-x: auto; padding: 0.5rem;
+      scroll-snap-type: x mandatory; border: 1px dashed #499965; background: #0a0a0a;
+    }
+    .lpv-card {
+      flex: 0 0 auto; width: 260px; scroll-snap-align: start; position: relative;
+      border: 2px solid #8dff95; background: #111;
+    }
+    .lpv-card img { width: 100%; height: 170px; object-fit: cover; border: 0; display: block; }
+    .lpv-caption {
+      padding: 0.5rem; font-size: 0.85rem; color: #cfd2d6; border-top: 1px solid #499965;
+    }
+    .lpv-hint { font-size: 0.8rem; color: #8dff95; margin: 0.4rem 0 0.2rem 0.2rem; }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.9); z-index: 1000;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 92vw; max-height: 85vh; border: 3px solid #8dff95; background: #000; }
+    .lb-close, .lb-prev, .lb-next {
+      position: absolute; top: 50%; transform: translateY(-50%); padding: 0.6rem 0.8rem; background: #111;
+      border: 2px solid #8dff95; color: #8dff95; cursor: pointer; font-size: 1.1rem;
+    }
+    .lb-close { top: 5%; right: 3%; transform: none; }
+    .lb-prev { left: 3%; }
+    .lb-next { right: 3%; }
+    .lb-counter { position: absolute; bottom: 4%; color: #8dff95; font-size: 0.9rem; }
   </style>
 </head>
 <body>
-  <img src="images/SaturnV.png" alt="DC256 Rocket" style="position: fixed; top: 0; left: 0; height: 100%; width: auto; z-index: -1; opacity: 0.3;">
+  <img src="images/SaturnV.png" alt="DC256 Rocket" style="position: fixed; top: 0; left: 0; height: 100%; width: auto; z-index: -1; opacity: 0.3;"/>
 
   <header>
-    <img src="images/DC256_Text.png" alt="DC256 Logo" style="height: 50px;">
+    <img src="images/DC256_Text.png" alt="DC256 Logo" style="height: 50px;"/>
     <nav>
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
@@ -130,9 +116,9 @@
     <h1>Upcoming Events</h1>
     <div class="event">
       <h2>November Meetup – Matthew McDougal AKA Doogie – Bluetooth Low Energy (BLE) Hacking Workshop</h2>
-      <p>Date: November 21, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
+      <p>Date: November 21, 2025<br/>Time: 6PM<br/>Location: GigaParts, Huntsville</p>
       <p class="sponsor">Sponsored By: NAC-ISSA</p>
-      <img src="images/Doogie_BLE_Hacking_Flyer.png" alt="Flyer for November 2025 BLE Hacking Workshop">
+      <img src="images/Doogie_BLE_Hacking_Flyer.png" alt="Flyer for November 2025 BLE Hacking Workshop"/>
     </div>
   </section>
 
@@ -142,72 +128,106 @@
 
     <div class="event">
       <h2>October Meetup – Hacking Fruit: Exploiting Juice Shop</h2>
-      <p>Date: October 17, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-      <img src="images/Brad Causey Juice Shop Flyer.png" alt="Flyer for October 2025 Juice Shop event">
+      <p>Date: October 17, 2025<br/>Time: 6PM<br/>Location: GigaParts, Huntsville</p>
+      <img src="images/Brad Causey Juice Shop Flyer.png" alt="Flyer for October 2025 Juice Shop event"/>
     </div>
 
     <div class="event">
       <h2>September Meetup – Lucero Huante-Frias — No Free Lateral Moves: Building Zero Trust the Hacker Way</h2>
-      <p>Date: September 19, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-      <img src="images/Lucero_Zero_Trust_Flyer.png" alt="Lucero Huante-Frias Zero Trust flyer">
+      <p>Date: September 19, 2025<br/>Time: 6PM<br/>Location: GigaParts, Huntsville</p>
+      <img src="images/Lucero_Zero_Trust_Flyer.png" alt="Lucero Huante-Frias Zero Trust flyer"/>
     </div>
 
     <div class="event">
       <h2>August Workshop – Jason Baird — SDR Fundamentals: A Beginner’s Guide to the HackRF</h2>
-      <p>Date: August 15, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
+      <p>Date: August 15, 2025<br/>Time: 6PM<br/>Location: GigaParts, Huntsville</p>
       <p class="sponsor">Title Sponsored By: Skinny R&amp;D</p>
-      <img src="images/flyer-august Skinny.png" alt="Jason Baird SDR Fundamentals flyer">
+      <img src="images/flyer-august Skinny.png" alt="Jason Baird SDR Fundamentals flyer"/>
     </div>
 
     <div class="event">
       <h2>July Meetup – Rae Baker &amp; Bri Benson — Attack Surface Intel: Mapping Exposures with OSINT</h2>
-      <p>Date: July 18, 2025<br>Time: 6PM<br>Location: HudsonAlpha, Huntsville</p>
-      <img src="images/OSINT_Workshop_Flyer_Final.png" alt="OSINT Workshop flyer">
+      <p>Date: July 18, 2025<br/>Time: 6PM<br/>Location: HudsonAlpha, Huntsville</p>
+      <img src="images/OSINT_Workshop_Flyer_Final.png" alt="OSINT Workshop flyer"/>
     </div>
 
     <div class="event">
       <h2>June Meetup – Rodney Visser — Silent Intrusion: Delivering RF-Triggered Cyber Effects</h2>
-      <p>Date: June 20, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-      <img src="images/Rodney_Visser_DC256_Flyer.png" alt="Rodney Visser RF-Triggered Cyber Effects flyer">
+      <p>Date: June 20, 2025<br/>Time: 6PM<br/>Location: GigaParts, Huntsville</p>
+      <img src="images/Rodney_Visser_DC256_Flyer.png" alt="Rodney Visser RF-Triggered Cyber Effects flyer"/>
     </div>
 
     <div class="event">
       <h2>May Workshop – CTF Crash Course</h2>
-      <p>Date: May 16, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-      <img src="images/dayt0n_CTF_Crash_Course.png" alt="CTF Crash Course flyer">
+      <p>Date: May 16, 2025<br/>Time: 6PM<br/>Location: GigaParts, Huntsville</p>
+      <img src="images/dayt0n_CTF_Crash_Course.png" alt="CTF Crash Course flyer"/>
     </div>
 
     <div class="event">
       <h2>April Meetup – Lost in Translation: How Underlying Decompiler Architecture Shapes Malware Classification</h2>
-      <p>Date: April 18, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-      <img src="images/Lost_In_Translation_5.png" alt="Lost in Translation malware classification flyer">
+      <p>Date: April 18, 2025<br/>Time: 6PM<br/>Location: GigaParts, Huntsville</p>
+      <img src="images/Lost_In_Translation_5.png" alt="Lost in Translation malware classification flyer"/>
     </div>
 
     <div class="event">
       <h2>March Workshop – Learn to Lockpick (Dawson Smith)</h2>
-      <p>Date: March 21, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
+      <p>Date: March 21, 2025<br/>Time: 6PM<br/>Location: GigaParts, Huntsville</p>
       <p class="sponsor">Sponsored By: Killchainz</p>
-      <img src="images/Dooson_Lockpicking_3.png" alt="Learn to Lockpick workshop flyer">
+      <img src="images/Dooson_Lockpicking_3.png" alt="Learn to Lockpick workshop flyer"/>
     </div>
 
     <div class="event">
       <h2>February Meetup – Brad Horton — Red, Blue, Purple, Green, Pink, Rainbow</h2>
-      <p>Date: February 21, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
+      <p>Date: February 21, 2025<br/>Time: 6PM<br/>Location: GigaParts, Huntsville</p>
       <p class="sponsor">Sponsored By: PeopleTec Inc</p>
-      <img src="images/Brad_Horton_Discord.jpeg" alt="Brad Horton DC256 flyer">
+      <img src="images/Brad_Horton_Discord.jpeg" alt="Brad Horton DC256 flyer"/>
     </div>
 
     <div class="event">
       <h2>January Meetup – Paul Coggin — Space Cyber Resilience</h2>
-      <p>Date: January 24, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-      <img src="images/Paul_Coggins.png.jpeg" alt="Paul Coggin space cyber resilience flyer">
+      <p>Date: January 24, 2025<br/>Time: 6PM<br/>Location: GigaParts, Huntsville</p>
+      <img src="images/Paul_Coggins.png.jpeg" alt="Paul Coggin space cyber resilience flyer"/>
+    </div>
+
+    <!-- Unique Gallery Block: National Cyber Summit Lockpicking Village -->
+    <div class="event" id="ncs-lpv">
+      <h2>National Cyber Summit – DC256 Lockpicking Village</h2>
+      <p>Year: 2025<br/>Location: National Cyber Summit (Huntsville, AL)</p>
+      <p class="lpv-hint">Swipe/scroll ➜ and click any photo to view full-size</p>
+      <div class="lpv-wrap" aria-label="Lockpicking Village Gallery">
+        <div class="lpv-strip" role="list">
+          <!-- Each card -->
+          <div class="lpv-card" role="listitem">
+            <img src="images/IMG_0067.jpg" alt="Lockpicking Village table with DC256 banner" data-full="images/IMG_0067.jpg"/>
+            <div class="lpv-caption">Village setup &amp; banner</div>
+          </div>
+          <div class="lpv-card" role="listitem">
+            <img src="images/IMG_0068.jpg" alt="Participants learning at the DC256 Lockpicking Village" data-full="images/IMG_0068.jpg"/>
+            <div class="lpv-caption">Hands-on demos</div>
+          </div>
+          <div class="lpv-card" role="listitem">
+            <img src="images/IMG_0069.jpg" alt="Wide view of Lockpicking Village tables and gear" data-full="images/IMG_0069.jpg"/>
+            <div class="lpv-caption">Tools &amp; guidance</div>
+          </div>
+          <div class="lpv-card" role="listitem">
+            <img src="images/IMG_0070.jpg" alt="Close-up of a participant practicing lockpicking" data-full="images/IMG_0070.jpg"/>
+            <div class="lpv-caption">Close-up practice</div>
+          </div>
+          <div class="lpv-card" role="listitem">
+            <img src="images/IMG_0071.jpg" alt="Attendees discussing picks at the village" data-full="images/IMG_0071.jpg"/>
+            <div class="lpv-caption">Crowd engagement</div>
+          </div>
+          <div class="lpv-card" role="listitem">
+            <img src="images/IMG_0072.jpg" alt="Students trying different locks at the table" data-full="images/IMG_0072.jpg"/>
+            <div class="lpv-caption">All skill levels</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- === ARCHIVE TOGGLE: 2024 === -->
-  <button class="archive-header" id="toggle-2024"
-          aria-controls="archive-2024"
-          aria-expanded="false">
+  <button class="archive-header" id="toggle-2024" aria-controls="archive-2024" aria-expanded="false">
     <h2>Archive (2024)</h2>
     <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
   </button>
@@ -216,24 +236,22 @@
       <section class="events-section" aria-label="Archive 2024 Events">
         <div class="event">
           <h2>September Monthly Meetup — Drinks &amp; Live Music @ Maggie Meyers Irish Pub</h2>
-          <p>Date: September 13, 2024<br>Time: 7PM<br>Location: Maggie Meyers Irish Pub, Huntsville</p>
-          <img src="images/DC256-Sept-Flyer.png" alt="DC256 September 2024 Meetup Flyer">
-          <img src="images/DC256_Maggy_meyes_meetup9-13-24.jpg" alt="Group photo from September 2024 DC256 meetup at Maggie Meyers Irish Pub">
+          <p>Date: September 13, 2024<br/>Time: 7PM<br/>Location: Maggie Meyers Irish Pub, Huntsville</p>
+          <img src="images/DC256-Sept-Flyer.png" alt="DC256 September 2024 Meetup Flyer"/>
+          <img src="images/DC256_Maggy_meyes_meetup9-13-24.jpg" alt="Group photo from September 2024 DC256 meetup at Maggie Meyers Irish Pub"/>
         </div>
 
         <div class="event">
           <h2>DC256 @ DEF CON 32 — Community Meetup</h2>
-          <p>Date: August 8, 2024<br>Location: Las Vegas, NV</p>
-          <img src="images/DC256_DEFCON32_Meetup.jpg" alt="DC256 DEF CON 32 meetup group photo">
+          <p>Date: August 8, 2024<br/>Location: Las Vegas, NV</p>
+          <img src="images/DC256_DEFCON32_Meetup.jpg" alt="DC256 DEF CON 32 meetup group photo"/>
         </div>
       </section>
     </div>
   </section>
 
   <!-- === ARCHIVE TOGGLE: 2023 === -->
-  <button class="archive-header" id="toggle-2023"
-          aria-controls="archive-2023"
-          aria-expanded="false">
+  <button class="archive-header" id="toggle-2023" aria-controls="archive-2023" aria-expanded="false">
     <h2>Archive (2023)</h2>
     <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
   </button>
@@ -242,15 +260,15 @@
       <section class="events-section" aria-label="Archive 2023 Events">
         <div class="event">
           <h2>Beers &amp; Stories with Dildog</h2>
-          <p>Date: December 1, 2023<br>Time: 7PM<br>Location: Maggie Meyers Irish Pub, Huntsville</p>
-          <img src="images/DC256_Beers_and_Stories_with_Dildog.jpg" alt="Beers & Stories with Dildog flyer">
-          <img src="images/Beers_and_Stories_With_Dildog_Crowd.jpg" alt="Beers & Stories with Dildog crowd photo">
+          <p>Date: December 1, 2023<br/>Time: 7PM<br/>Location: Maggie Meyers Irish Pub, Huntsville</p>
+          <img src="images/DC256_Beers_and_Stories_with_Dildog.jpg" alt="Beers & Stories with Dildog flyer"/>
+          <img src="images/Beers_and_Stories_With_Dildog_Crowd.jpg" alt="Beers & Stories with Dildog crowd photo"/>
         </div>
 
         <div class="event">
           <h2>First DC256 Meetup</h2>
-          <p>Date: November 17, 2023<br>Location: Huntsville, AL</p>
-          <img src="images/DC256_First_Meetup.jpg" alt="First DC256 meetup group photo">
+          <p>Date: November 17, 2023<br/>Location: Huntsville, AL</p>
+          <img src="images/DC256_First_Meetup.jpg" alt="First DC256 meetup group photo"/>
         </div>
       </section>
     </div>
@@ -268,31 +286,70 @@
   </footer>
 
   <script>
-    // Simple accessible toggle handler for archive sections
+    // Collapsible archive toggles
     function setupArchiveToggle(btnId, panelId) {
       const btn = document.getElementById(btnId);
       const panel = document.getElementById(panelId);
       if (!btn || !panel) return;
-
       function toggle(open) {
         const isOpen = open !== undefined ? open : panel.dataset.open !== "true";
         panel.dataset.open = isOpen ? "true" : "false";
         btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
       }
-
       btn.addEventListener("click", () => toggle());
-
-      // Keyboard support: Enter/Space activate (button already handles this natively)
-      // Open if hash points to this panel
       if (location.hash && (location.hash === ("#" + panelId) || location.hash === ("#" + btnId))) {
         toggle(true);
-        // Scroll into view after expansion
-        setTimeout(() => btn.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+        setTimeout(() => btn.scrollIntoView({behavior:"smooth", block:"start"}), 50);
       }
     }
-
     setupArchiveToggle("toggle-2024", "archive-2024");
     setupArchiveToggle("toggle-2023", "archive-2023");
+
+    // Lightbox for Lockpicking Village gallery
+    (function(){
+      const images = Array.from(document.querySelectorAll('#ncs-lpv .lpv-card img'));
+      if (!images.length) return;
+
+      // Build lightbox once
+      const lb = document.createElement('div');
+      lb.className = 'lightbox';
+      lb.innerHTML = `
+        <button class="lb-close" aria-label="Close lightbox">&times;</button>
+        <button class="lb-prev" aria-label="Previous image">&#9664;</button>
+        <img alt="Lockpicking Village photo"/>
+        <button class="lb-next" aria-label="Next image">&#9654;</button>
+        <div class="lb-counter" aria-live="polite"></div>
+      `;
+      document.body.appendChild(lb);
+
+      const lbImg = lb.querySelector('img');
+      const btnClose = lb.querySelector('.lb-close');
+      const btnPrev = lb.querySelector('.lb-prev');
+      const btnNext = lb.querySelector('.lb-next');
+      const counter = lb.querySelector('.lb-counter');
+      let idx = 0;
+
+      function show(i){
+        idx = (i + images.length) % images.length;
+        const src = images[idx].dataset.full || images[idx].src;
+        lbImg.src = src;
+        counter.textContent = (idx+1) + ' / ' + images.length;
+      }
+      function open(i){ show(i); lb.classList.add('open'); }
+      function close(){ lb.classList.remove('open'); }
+
+      images.forEach((img, i) => img.addEventListener('click', () => open(i)));
+      btnClose.addEventListener('click', close);
+      btnPrev.addEventListener('click', () => show(idx - 1));
+      btnNext.addEventListener('click', () => show(idx + 1));
+      lb.addEventListener('click', e => { if (e.target === lb) close(); });
+      document.addEventListener('keydown', e => {
+        if (!lb.classList.contains('open')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') show(idx - 1);
+        if (e.key === 'ArrowRight') show(idx + 1);
+      });
+    })();
   </script>
 </body>
 </html>
