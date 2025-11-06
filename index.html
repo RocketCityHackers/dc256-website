@@ -5,7 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Home - DC256</title>
-  <link rel="icon" href="/mnt/data/DC256_Text.png" type="image/png">
+  <!-- use site asset path instead of local notebook path -->
+  <link rel="icon" href="images/DC256_Text.png" type="image/png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
   <style>
@@ -68,25 +69,14 @@
     }
 
     .typing {
-  font-size: 2rem;
-  color: var(--highlight);
-  white-space: nowrap;
-  overflow: hidden;
-  margin: 0 auto 1rem auto;
-  display: inline-block;
-  min-height: 2.4rem;
-}
-
-    
-  @keyframes typingEffect {
-  from { width: 0; }
-  to { width: 21ch; }
-}
-@keyframes blink {
-  0%, 100% { border-color: var(--highlight); }
-  50% { border-color: transparent; }
-}
-    
+      font-size: 2rem;
+      color: var(--highlight);
+      white-space: nowrap;
+      overflow: hidden;
+      margin: 0 auto 1rem auto;
+      display: inline-block;
+      min-height: 2.4rem;
+    }
 
     .cta {
       font-size: 1.1rem;
@@ -98,7 +88,7 @@
       background-color: #111;
       padding: 2rem;
       margin: 3rem auto;
-      max-width: 600px;
+      max-width: 900px;
       border: 1px solid var(--accent);
       font-family: monospace;
       color: var(--accent);
@@ -146,17 +136,10 @@
     .socials i:hover {
       color: var(--highlight);
     }
-  .cursor {
-  display: inline-block;
-  animation: blink 1s step-end infinite;
-  color: var(--highlight);
-}
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-</style>
-  <style>
+
+    .cursor { display: inline-block; animation: blink 1s step-end infinite; color: var(--highlight); }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
     canvas.matrix {
       position: fixed;
       top: 0;
@@ -180,8 +163,7 @@
       50% { text-shadow: 0.05em 0 0 yellow, -0.05em 0 0 magenta; }
       100% { text-shadow: 0.05em 0 0 red, -0.05em 0 0 blue; }
     }
-  </style>
-  <style>
+
     .scanlines {
       pointer-events: none;
       position: absolute;
@@ -204,6 +186,28 @@
     @keyframes flicker {
       0%, 100% { opacity: 0.15; }
       50% { opacity: 0.5; }
+    }
+
+    /* Next Event card */
+    .next-event {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+    .next-event img {
+      max-width: 100%;
+      border: 2px solid var(--highlight);
+      box-shadow: 0 0 14px rgba(141,255,149,.3);
+      background:#000;
+    }
+    .sponsor {
+      color: var(--highlight);
+      font-weight: bold;
+      margin-top: .4rem;
+    }
+    @media (max-width: 800px){
+      .next-event { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -228,7 +232,6 @@
     <img src="images/racoon.webp" alt="DC256 Mascot" style="max-height: 300px; filter: drop-shadow(0 0 10px var(--accent)); display: block; margin: 0 auto 2rem auto;">
     <div class="typing" style="display: flex; justify-content: center; align-items: center;"><span id="typingHeader"></span><span class="cursor">|</span></div>
     <div class="cta">DEF CON Group – Huntsville, Alabama</div>
-    
   </section>
 
   <section class="terminal" data-aos="fade-up">
@@ -239,41 +242,47 @@
     <div class="terminal-output" id="terminalOutput"></div>
   </section>
 
+  <section class="terminal" data-aos="fade-up" id="about">
+    <h2 style="color: var(--highlight);">About DC256</h2>
+    <p>DC256 is the Huntsville, Alabama DEF CON Group — a local meetup for hackers, tinkerers, and information security enthusiasts. We’re an open group welcoming everyone from seasoned professionals to curious newcomers.</p>
+    <p>Our mission is to share knowledge, promote hands-on experimentation, and build a strong local security community. Expect workshops, lightning talks, CTFs, and general chaos.</p>
+  </section>
 
-<section class="terminal" data-aos="fade-up" id="about">
-  <h2 style="color: var(--highlight);">About DC256</h2>
-  <p>DC256 is the Huntsville, Alabama DEF CON Group — a local meetup for hackers, tinkerers, and information security enthusiasts. We’re an open group welcoming everyone from seasoned professionals to curious newcomers.</p>
-  <p>Our mission is to share knowledge, promote hands-on experimentation, and build a strong local security community. Expect workshops, lightning talks, CTFs, and general chaos.</p>
-</section>
+  <!-- NEXT EVENT: November 2025 BLE workshop -->
+  <section class="terminal" data-aos="fade-up" id="events">
+    <h2 style="color: var(--highlight);">Next Event</h2>
+    <div class="next-event">
+      <div>
+        <h3 style="margin-top:0;color:#cfead3;">Bluetooth Low Energy (BLE) Hacking Workshop — with Matthew "Doogie" McDougal</h3>
+        <p><strong>Date:</strong> November 21, 2025 &nbsp;•&nbsp; <strong>Time:</strong> 6PM<br>
+           <strong>Location:</strong> GigaParts Classroom, 6123 University Dr, Huntsville, AL</p>
+        <p class="sponsor">Sponsored By: NAC-ISSA</p>
+        <p>First-come, first-served hands-on BLE gear. Bring a laptop if you’ve got one. Free event & food.</p>
+        <p style="margin-top:1rem;"><a href="events.html" style="color:var(--highlight);font-weight:bold;text-decoration:none;">See full 2025 lineup →</a></p>
+      </div>
+      <a href="events.html" aria-label="Open events page">
+        <img src="images/Doogie_BLE_Hacking_Flyer.png" alt="Flyer: November 2025 BLE Hacking Workshop">
+      </a>
+    </div>
+  </section>
 
-<section class="terminal" data-aos="fade-up" id="events">
-  <h2 style="color: var(--highlight);">Upcoming Events</h2>
-  <p>Join us on the 3rd Friday of every month at 6PM for our regular meetup at GigaParts in Huntsville.</p>
-  <ul>
-    <li><strong>October Workshop:</strong> October 17, 2025 — Topic: Hacking Fruit: Exploiting Juice Shop (Web App Hacking Fundamentals Workshop)</li>
-    <li><strong>November Workshop:</strong> November 21, 2025 — Topic: Bluetooth Low Energy (BLE) Hacking Workshop</li>
-  </ul>
-  <p>Follow us on Discord and Twitter for the latest event announcements.</p>
-</section>
-
-
-<section class="terminal" data-aos="fade-up" style="text-align: center; padding: 4rem 2rem;">
-  <h2 style="color: var(--highlight); margin-bottom: 1.5rem;">Join the DC256 Discord</h2>
-  <a href="https://discord.gg/7DgPkkJyCH" target="_blank" style="
-    display: inline-block;
-    padding: 1rem 2rem;
-    background-color: var(--accent);
-    color: black;
-    font-weight: bold;
-    font-size: 1.2rem;
-    border: 2px solid var(--highlight);
-    text-decoration: none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 0 10px var(--highlight);
-  " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-    Connect on Discord <i class="fab fa-discord"></i>
-  </a>
-</section>
+  <section class="terminal" data-aos="fade-up" style="text-align: center; padding: 4rem 2rem;">
+    <h2 style="color: var(--highlight); margin-bottom: 1.5rem;">Join the DC256 Discord</h2>
+    <a href="https://discord.gg/7DgPkkJyCH" target="_blank" style="
+      display: inline-block;
+      padding: 1rem 2rem;
+      background-color: var(--accent);
+      color: black;
+      font-weight: bold;
+      font-size: 1.2rem;
+      border: 2px solid var(--highlight);
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 0 10px var(--highlight);
+    " onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+      Connect on Discord <i class="fab fa-discord"></i>
+    </a>
+  </section>
 
   <section class="terminal" data-aos="fade-up" id="contact">
     <h2 style="color: var(--highlight);">Contact Us</h2>
@@ -283,8 +292,6 @@
     <iframe class="map" src="https://www.google.com/maps?q=GigaParts+Huntsville+AL&output=embed" width="100%" height="300" style="border:2px solid var(--accent); margin-top: 1rem;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
   </section>
 
-  
-
   <footer data-aos="fade-up">
     <p>&copy; 2025 DC256 - Huntsville DEF CON Group | Built by hackers, for hackers.</p>
     <p>Email us: <a href="mailto:info@dc256.org" style="color:var(--highlight)">info@dc256.org</a></p>
@@ -293,21 +300,20 @@
       <a href="https://x.com/defcon256" target="_blank"><i class="fab fa-twitter"></i></a>
       <a href="https://www.linkedin.com/company/dc256" target="_blank"><i class="fab fa-linkedin"></i></a>
       <a href="https://discord.gg/7DgPkkJyCH" target="_blank"><i class="fab fa-discord"></i></a>
-      
     </div>
   </footer>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    // Typing effect for header
-    const headerText = "Welcome to DC256 ";
+    // Typing effect for header (highlights next event)
+    const headerText = "Next: BLE Hacking Workshop — Nov 21 @ GigaParts";
     const headerElement = document.getElementById("typingHeader");
     let charIndex = 0;
     function typeHeader() {
       if (charIndex < headerText.length) {
         headerElement.textContent += headerText.charAt(charIndex);
         charIndex++;
-        setTimeout(typeHeader, 120);
+        setTimeout(typeHeader, 60);
       } else {
         headerElement.classList.add("glitch");
       }
@@ -330,9 +336,7 @@
       "date": new Date().toString(),
       "clear": "clear",
       "help": "Try: whoami, uptime, ls, pwd, cd, cat flag.txt, \ndate, clear, help, dc256, sudo, motd, fortune, \nbanner, echo, nmap, hacktheplanet, rm -rf /, \ncontact, coffee, helpme, quote",
-      "dc256": "DEF CON Group 256 - Meet us 3rd Fridays @ GigaParts Huntsville 6PM",
-
-  // Creative/fun additions:
+      "dc256": "Next event: BLE Hacking Workshop (Doogie) — Nov 21, 2025 @ 6PM, GigaParts. Sponsored by NAC-ISSA.",
       "sudo": "Nice try. You already have root access. 😏",
       "motd": "Welcome to the rockin' underground of Rocket City hackers. Remember: Hack the planet!",
       "fortune": "There are 10 types of people in the world: those who understand binary and those who don't.",
@@ -356,7 +360,6 @@
       "helpme": "Try 'help' (or just ask someone wearing all black at the meetup).",
       "quote": "“The quieter you become, the more you are able to hear.” – Kali Linux"
     };
-
 
     commandInput.addEventListener('keydown', function(e) {
       if (e.key === 'Enter') {
@@ -412,107 +415,106 @@
     setInterval(drawMatrix, 33);
   </script>
   <script>
-  // Subtle Particle Grid
-  const particleCanvas = document.getElementById('particles');
-  const pCtx = particleCanvas.getContext('2d');
-  let particles = [];
+    // Subtle Particle Grid
+    const particleCanvas = document.getElementById('particles');
+    const pCtx = particleCanvas.getContext('2d');
+    let particles = [];
 
-  function resizeParticlesCanvas() {
-    particleCanvas.width = particleCanvas.offsetWidth;
-    particleCanvas.height = particleCanvas.offsetHeight;
-  }
-
-  function createParticles() {
-    const count = 75;
-    for (let i = 0; i < count; i++) {
-      particles.push({
-        x: Math.random() * particleCanvas.width,
-        y: Math.random() * particleCanvas.height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3
-      });
-    }
-  }
-
-  function updateParticles() {
-    pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
-    for (let p of particles) {
-      p.x += p.vx;
-      p.y += p.vy;
-
-      if (p.x < 0 || p.x > particleCanvas.width) p.vx *= -1;
-      if (p.y < 0 || p.y > particleCanvas.height) p.vy *= -1;
-
-      pCtx.beginPath();
-      pCtx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
-      pCtx.fillStyle = 'rgba(141, 255, 149, 0.4)';
-      pCtx.fill();
+    function resizeParticlesCanvas() {
+      particleCanvas.width = particleCanvas.offsetWidth;
+      particleCanvas.height = particleCanvas.offsetHeight;
     }
 
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        let dx = particles[i].x - particles[j].x;
-        let dy = particles[i].y - particles[j].y;
-        let dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 80) {
-          pCtx.beginPath();
-          pCtx.moveTo(particles[i].x, particles[i].y);
-          pCtx.lineTo(particles[j].x, particles[j].y);
-          pCtx.strokeStyle = 'rgba(141, 255, 149, 0.1)';
-          pCtx.stroke();
-        }
+    function createParticles() {
+      const count = 75;
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * particleCanvas.width,
+          y: Math.random() * particleCanvas.height,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3
+        });
       }
     }
 
-    requestAnimationFrame(updateParticles);
-  }
+    function updateParticles() {
+      pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+      for (let p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
 
-  resizeParticlesCanvas();
-  createParticles();
-  updateParticles();
-  window.addEventListener('resize', () => {
-    resizeParticlesCanvas();
-    particles = [];
-    createParticles();
-  });
-</script>
-<script>
-  const bootMessages = [
-    "Booting DC256 OS v3.1.4...",
-    "[OK] Initializing terminal subsystem...",
-    "[OK] Loading DEF CON protocols...",
-    "[OK] Establishing secure connection...",
-    "[OK] Authenticating node...",
-    "[OK] Mounting /home/dc256/...",
-    "[OK] Launching hacker interface...",
-    "Welcome to DC256. Engage."  
-  ];
+        if (p.x < 0 || p.x > particleCanvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > particleCanvas.height) p.vy *= -1;
 
-  const bootScreen = document.getElementById('bootScreen');
-  let bootIndex = 0;
+        pCtx.beginPath();
+        pCtx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+        pCtx.fillStyle = 'rgba(141, 255, 149, 0.4)';
+        pCtx.fill();
+      }
 
-  function typeBootMessage() {
-    if (bootIndex < bootMessages.length) {
-      const line = document.createElement('div');
-      line.textContent = bootMessages[bootIndex];
-      bootScreen.appendChild(line);
-      bootIndex++;
-      setTimeout(typeBootMessage, 300);
-    } else {
-      setTimeout(() => {
-        bootScreen.style.opacity = '0';
-        setTimeout(() => { bootScreen.style.display = 'none'; }, 500);
-      }, 1000);
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 80) {
+            pCtx.beginPath();
+            pCtx.moveTo(particles[i].x, particles[i].y);
+            pCtx.lineTo(particles[j].x, particles[j].y);
+            pCtx.strokeStyle = 'rgba(141, 255, 149, 0.1)';
+            pCtx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(updateParticles);
     }
-  }
-  window.addEventListener('load', () => {
-  typeBootMessage();
-  // Fallback to hide the boot screen after 7 seconds
-  setTimeout(() => {
-    bootScreen.style.display = 'none';
-  }, 7000);
-});
-</script>
-</body>
 
+    resizeParticlesCanvas();
+    createParticles();
+    updateParticles();
+    window.addEventListener('resize', () => {
+      resizeParticlesCanvas();
+      particles = [];
+      createParticles();
+    });
+  </script>
+  <script>
+    const bootMessages = [
+      "Booting DC256 OS v3.1.4...",
+      "[OK] Initializing terminal subsystem...",
+      "[OK] Loading DEF CON protocols...",
+      "[OK] Establishing secure connection...",
+      "[OK] Authenticating node...",
+      "[OK] Mounting /home/dc256/...",
+      "[OK] Launching hacker interface...",
+      "Welcome to DC256. Engage."
+    ];
+
+    const bootScreen = document.getElementById('bootScreen');
+    let bootIndex = 0;
+
+    function typeBootMessage() {
+      if (bootIndex < bootMessages.length) {
+        const line = document.createElement('div');
+        line.textContent = bootMessages[bootIndex];
+        bootScreen.appendChild(line);
+        bootIndex++;
+        setTimeout(typeBootMessage, 300);
+      } else {
+        setTimeout(() => {
+          bootScreen.style.opacity = '0';
+          setTimeout(() => { bootScreen.style.display = 'none'; }, 500);
+        }, 1000);
+      }
+    }
+    window.addEventListener('load', () => {
+      typeBootMessage();
+      // Fallback to hide the boot screen after 7 seconds
+      setTimeout(() => {
+        bootScreen.style.display = 'none';
+      }, 7000);
+    });
+  </script>
+</body>
 </html>
