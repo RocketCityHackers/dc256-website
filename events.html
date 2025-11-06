@@ -30,9 +30,8 @@
       text-decoration: none;
       font-weight: bold;
     }
-    nav a:hover {
-      color: #8dff95;
-    }
+    nav a:hover { color: #8dff95; }
+
     .events-section {
       padding: 2rem;
       max-width: 800px;
@@ -43,6 +42,7 @@
       border-bottom: 1px solid #499965;
       padding-bottom: 0.5rem;
     }
+
     .event {
       border: 1px solid #499965;
       padding: 1rem;
@@ -54,6 +54,7 @@
       max-width: 100%;
       border: 2px solid #8dff95;
       margin-top: 0.5rem;
+      display: block;
     }
     .sponsor {
       font-style: italic;
@@ -61,11 +62,58 @@
       margin-top: 0.5rem;
       font-weight: bold;
     }
+
+    /* Collapsible archive controls */
+    .archive-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background: #0d0d0d;
+      border: 1px solid #499965;
+      padding: 0.75rem 1rem;
+      margin: 2rem auto 0;
+      max-width: 800px;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 0 10px rgba(77, 255, 128, 0.2);
+    }
+    .archive-header h2 {
+      color: #8dff95;
+      margin: 0;
+      font-size: 1.25rem;
+    }
+    .archive-header .chevron {
+      transition: transform 0.2s ease;
+    }
+    .archive-header[aria-expanded="true"] .chevron {
+      transform: rotate(180deg);
+    }
+    .archive-panel {
+      max-width: 800px;
+      margin: 0 auto;
+      overflow: hidden;
+      transition: grid-template-rows 0.25s ease, opacity 0.25s ease;
+      display: grid;
+      grid-template-rows: 0fr; /* collapsed */
+      opacity: 0.6;
+    }
+    .archive-panel[data-open="true"] {
+      grid-template-rows: 1fr; /* expanded */
+      opacity: 1;
+    }
+    .archive-panel > .archive-content {
+      overflow: hidden;
+    }
+
+    /* Small helper for focus visibility */
+    .archive-header:focus { outline: 2px solid #8dff95; outline-offset: 2px; }
+    .archive-header:focus-visible { outline: 2px solid #8dff95; outline-offset: 2px; }
   </style>
 </head>
 <body>
   <img src="images/SaturnV.png" alt="DC256 Rocket" style="position: fixed; top: 0; left: 0; height: 100%; width: auto; z-index: -1; opacity: 0.3;">
-  
+
   <header>
     <img src="images/DC256_Text.png" alt="DC256 Logo" style="height: 50px;">
     <nav>
@@ -73,12 +121,12 @@
       <a href="about.html">About</a>
       <a href="events.html">Events</a>
       <a href="contact.html">Contact</a>
-      <a href="https://shop.dc256.org/ target="_blank">Shop</a>
+      <a href="https://dc256.printify.me/products" target="_blank">Shop</a>
     </nav>
   </header>
 
   <!-- === UPCOMING EVENTS: 2025 === -->
-  <section class="events-section">
+  <section class="events-section" id="upcoming-2025">
     <h1>Upcoming Events</h1>
     <div class="event">
       <h2>November Meetup – Matthew McDougal AKA Doogie – Bluetooth Low Energy (BLE) Hacking Workshop</h2>
@@ -89,60 +137,52 @@
   </section>
 
   <!-- === PREVIOUS EVENTS: 2025 === -->
-  <section class="events-section">
-    <h1>Previous Events</h1>
+  <section class="events-section" id="previous-2025">
+    <h1>Previous Events (2025)</h1>
 
-    <!-- October 2025 -->
     <div class="event">
       <h2>October Meetup – Hacking Fruit: Exploiting Juice Shop</h2>
       <p>Date: October 17, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
       <img src="images/Brad Causey Juice Shop Flyer.png" alt="Flyer for October 2025 Juice Shop event">
     </div>
 
-    <!-- September 2025 -->
     <div class="event">
       <h2>September Meetup – Lucero Huante-Frias — No Free Lateral Moves: Building Zero Trust the Hacker Way</h2>
       <p>Date: September 19, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
       <img src="images/Lucero_Zero_Trust_Flyer.png" alt="Lucero Huante-Frias Zero Trust flyer">
     </div>
 
-    <!-- August 2025 -->
     <div class="event">
       <h2>August Workshop – Jason Baird — SDR Fundamentals: A Beginner’s Guide to the HackRF</h2>
       <p>Date: August 15, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-      <p class="sponsor">Title Sponsored By: Skinny R&D</p>
+      <p class="sponsor">Title Sponsored By: Skinny R&amp;D</p>
       <img src="images/flyer-august Skinny.png" alt="Jason Baird SDR Fundamentals flyer">
     </div>
 
-    <!-- July 2025 -->
     <div class="event">
       <h2>July Meetup – Rae Baker &amp; Bri Benson — Attack Surface Intel: Mapping Exposures with OSINT</h2>
       <p>Date: July 18, 2025<br>Time: 6PM<br>Location: HudsonAlpha, Huntsville</p>
       <img src="images/OSINT_Workshop_Flyer_Final.png" alt="OSINT Workshop flyer">
     </div>
 
-    <!-- June 2025 -->
     <div class="event">
       <h2>June Meetup – Rodney Visser — Silent Intrusion: Delivering RF-Triggered Cyber Effects</h2>
       <p>Date: June 20, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
       <img src="images/Rodney_Visser_DC256_Flyer.png" alt="Rodney Visser RF-Triggered Cyber Effects flyer">
     </div>
 
-    <!-- May 2025 -->
     <div class="event">
       <h2>May Workshop – CTF Crash Course</h2>
       <p>Date: May 16, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
       <img src="images/dayt0n_CTF_Crash_Course.png" alt="CTF Crash Course flyer">
     </div>
 
-    <!-- April 2025 -->
     <div class="event">
       <h2>April Meetup – Lost in Translation: How Underlying Decompiler Architecture Shapes Malware Classification</h2>
       <p>Date: April 18, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
       <img src="images/Lost_In_Translation_5.png" alt="Lost in Translation malware classification flyer">
     </div>
 
-    <!-- March 2025 -->
     <div class="event">
       <h2>March Workshop – Learn to Lockpick (Dawson Smith)</h2>
       <p>Date: March 21, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
@@ -150,7 +190,6 @@
       <img src="images/Dooson_Lockpicking_3.png" alt="Learn to Lockpick workshop flyer">
     </div>
 
-    <!-- February 2025 -->
     <div class="event">
       <h2>February Meetup – Brad Horton — Red, Blue, Purple, Green, Pink, Rainbow</h2>
       <p>Date: February 21, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
@@ -158,13 +197,63 @@
       <img src="images/Brad_Horton_Discord.jpeg" alt="Brad Horton DC256 flyer">
     </div>
 
-    <!-- January 2025 -->
     <div class="event">
       <h2>January Meetup – Paul Coggin — Space Cyber Resilience</h2>
       <p>Date: January 24, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
       <img src="images/Paul_Coggins.png.jpeg" alt="Paul Coggin space cyber resilience flyer">
     </div>
+  </section>
 
+  <!-- === ARCHIVE TOGGLE: 2024 === -->
+  <button class="archive-header" id="toggle-2024"
+          aria-controls="archive-2024"
+          aria-expanded="false">
+    <h2>Archive (2024)</h2>
+    <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
+  </button>
+  <section class="archive-panel" id="archive-2024" data-open="false">
+    <div class="archive-content">
+      <section class="events-section" aria-label="Archive 2024 Events">
+        <div class="event">
+          <h2>September Monthly Meetup — Drinks &amp; Live Music @ Maggie Meyers Irish Pub</h2>
+          <p>Date: September 13, 2024<br>Time: 7PM<br>Location: Maggie Meyers Irish Pub, Huntsville</p>
+          <img src="images/DC256-Sept-Flyer.png" alt="DC256 September 2024 Meetup Flyer">
+          <img src="images/DC256_Maggy_meyes_meetup9-13-24.jpg" alt="Group photo from September 2024 DC256 meetup at Maggie Meyers Irish Pub">
+        </div>
+
+        <div class="event">
+          <h2>DC256 @ DEF CON 32 — Community Meetup</h2>
+          <p>Date: August 8, 2024<br>Location: Las Vegas, NV</p>
+          <img src="images/DC256_DEFCON32_Meetup.jpg" alt="DC256 DEF CON 32 meetup group photo">
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- === ARCHIVE TOGGLE: 2023 === -->
+  <button class="archive-header" id="toggle-2023"
+          aria-controls="archive-2023"
+          aria-expanded="false">
+    <h2>Archive (2023)</h2>
+    <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
+  </button>
+  <section class="archive-panel" id="archive-2023" data-open="false">
+    <div class="archive-content">
+      <section class="events-section" aria-label="Archive 2023 Events">
+        <div class="event">
+          <h2>Beers &amp; Stories with Dildog</h2>
+          <p>Date: December 1, 2023<br>Time: 7PM<br>Location: Maggie Meyers Irish Pub, Huntsville</p>
+          <img src="images/DC256_Beers_and_Stories_with_Dildog.jpg" alt="Beers & Stories with Dildog flyer">
+          <img src="images/Beers_and_Stories_With_Dildog_Crowd.jpg" alt="Beers & Stories with Dildog crowd photo">
+        </div>
+
+        <div class="event">
+          <h2>First DC256 Meetup</h2>
+          <p>Date: November 17, 2023<br>Location: Huntsville, AL</p>
+          <img src="images/DC256_First_Meetup.jpg" alt="First DC256 meetup group photo">
+        </div>
+      </section>
+    </div>
   </section>
 
   <footer style="background-color: #111; text-align: center; padding: 2rem; font-size: 0.9rem; border-top: 2px solid #8dff95; margin-top: auto;">
@@ -177,5 +266,33 @@
       <a href="https://discord.gg/7DgPkkJyCH" target="_blank"><i class="fab fa-discord" style="margin: 0 1rem; font-size: 1.5rem; color: #499965;"></i></a>
     </div>
   </footer>
+
+  <script>
+    // Simple accessible toggle handler for archive sections
+    function setupArchiveToggle(btnId, panelId) {
+      const btn = document.getElementById(btnId);
+      const panel = document.getElementById(panelId);
+      if (!btn || !panel) return;
+
+      function toggle(open) {
+        const isOpen = open !== undefined ? open : panel.dataset.open !== "true";
+        panel.dataset.open = isOpen ? "true" : "false";
+        btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      }
+
+      btn.addEventListener("click", () => toggle());
+
+      // Keyboard support: Enter/Space activate (button already handles this natively)
+      // Open if hash points to this panel
+      if (location.hash && (location.hash === ("#" + panelId) || location.hash === ("#" + btnId))) {
+        toggle(true);
+        // Scroll into view after expansion
+        setTimeout(() => btn.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+      }
+    }
+
+    setupArchiveToggle("toggle-2024", "archive-2024");
+    setupArchiveToggle("toggle-2023", "archive-2023");
+  </script>
 </body>
 </html>
