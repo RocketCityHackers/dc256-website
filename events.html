@@ -6,52 +6,168 @@
   <title>Events - DC256</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    body { background-color:#000;color:#9a9da2;font-family:'Courier New',monospace;margin:0;padding:0;display:flex;flex-direction:column;min-height:100vh;}
-    header { background-color:#111;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #8dff95;}
-    nav a { margin:0 1rem;color:#499965;text-decoration:none;font-weight:bold;}
-    nav a:hover { color:#8dff95;}
-    .events-section { padding:2rem;max-width:800px;margin:auto;}
-    .events-section h1 { color:#8dff95;border-bottom:1px solid #499965;padding-bottom:.5rem;}
-    .event { border:1px solid #499965;padding:1rem;margin:1rem 0;background-color:#111;box-shadow:0 0 10px #499965;}
-    /* Base event images (non-flyer) */
-    .event img { max-width:100%;border:2px solid #8dff95;margin-top:.5rem;display:block;}
-    /* NEW: make all flyers uniform size across devices */
-    .event img.flyer {
+    body {
+      background-color:#000;
+      color:#9a9da2;
+      font-family:'Courier New',monospace;
+      margin:0;
+      padding:0;
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+    }
+
+    header {
+      background-color:#111;
+      padding:1rem 2rem;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:2px solid #8dff95;
+    }
+
+    nav a {
+      margin:0 1rem;
+      color:#499965;
+      text-decoration:none;
+      font-weight:bold;
+    }
+
+    nav a:hover { color:#8dff95; }
+
+    .events-section {
+      padding:2rem;
+      max-width:800px;
+      margin:auto;
+    }
+
+    .events-section h1 {
+      color:#8dff95;
+      border-bottom:1px solid #499965;
+      padding-bottom:.5rem;
+    }
+
+    .event {
+      border:1px solid #499965;
+      padding:1rem;
+      margin:1rem 0;
+      background-color:#111;
+      box-shadow:0 0 10px #499965;
+    }
+
+    /* ✅ Make all flyers uniform in size */
+    .event img {
       width:100%;
-      aspect-ratio: 3 / 4;          /* consistent portrait ratio */
-      object-fit: cover;             /* fills the frame neatly */
-      height:auto;                   /* lets aspect-ratio control height from width */
+      height:auto;
+      aspect-ratio:3/4;
+      object-fit:cover;
+      border:2px solid #8dff95;
+      margin-top:.5rem;
+      display:block;
+      max-width:100%;
+      box-sizing:border-box;
     }
-    /* Optional: slightly taller frame on very small phones if desired */
-    @media (max-width: 420px) {
-      .event img.flyer { aspect-ratio: 2.9 / 4; }
+
+    @media (max-width:480px) {
+      .event img { aspect-ratio:2.9/4; }
     }
 
-    .sponsor { font-style:italic;color:#8dff95;margin-top:.5rem;font-weight:bold;}
+    .sponsor {
+      font-style:italic;
+      color:#8dff95;
+      margin-top:.5rem;
+      font-weight:bold;
+    }
 
-    .archive-header { display:flex;align-items:center;justify-content:space-between;gap:1rem;background:#0d0d0d;border:1px solid #499965;padding:.75rem 1rem;margin:2rem auto 0;max-width:800px;cursor:pointer;user-select:none;box-shadow:0 0 10px rgba(77,255,128,.2);}
-    .archive-header h2 { color:#8dff95;margin:0;font-size:1.25rem;}
-    .archive-header .chevron { transition:transform .2s ease;}
-    .archive-header[aria-expanded="true"] .chevron { transform:rotate(180deg);}
-    .archive-panel { max-width:800px;margin:0 auto;overflow:hidden;transition:grid-template-rows .25s ease,opacity .25s ease;display:grid;grid-template-rows:0fr;opacity:.6;}
-    .archive-panel[data-open="true"] { grid-template-rows:1fr;opacity:1;}
-    .archive-panel>.archive-content { overflow:hidden;}
+    .archive-header {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+      background:#0d0d0d;
+      border:1px solid #499965;
+      padding:.75rem 1rem;
+      margin:2rem auto 0;
+      max-width:800px;
+      cursor:pointer;
+      user-select:none;
+      box-shadow:0 0 10px rgba(77,255,128,.2);
+    }
 
-    .lpv-wrap { margin-top:.75rem;}
-    .lpv-strip { display:flex;gap:.75rem;overflow-x:auto;padding:.5rem;scroll-snap-type:x mandatory;border:1px dashed #499965;background:#0a0a0a;}
-    .lpv-card { flex:0 0 auto;width:260px;scroll-snap-align:start;position:relative;border:2px solid #8dff95;background:#111;}
-    .lpv-card img { width:100%;height:170px;object-fit:cover;border:0;display:block;}
-    .lpv-caption { padding:.5rem;font-size:.85rem;color:#cfd2d6;border-top:1px solid #499965;}
-    .lpv-hint { font-size:.8rem;color:#8dff95;margin:.4rem 0 .2rem .2rem;}
+    .archive-header h2 {
+      color:#8dff95;
+      margin:0;
+      font-size:1.25rem;
+    }
 
-    .lightbox { position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.9);z-index:1000;}
-    .lightbox.open { display:flex;}
-    .lightbox img { max-width:92vw;max-height:85vh;border:3px solid #8dff95;background:#000;}
-    .lb-close,.lb-prev,.lb-next { position:absolute;top:50%;transform:translateY(-50%);padding:.6rem .8rem;background:#111;border:2px solid #8dff95;color:#8dff95;cursor:pointer;font-size:1.1rem;}
-    .lb-close { top:5%;right:3%;transform:none;}
-    .lb-prev { left:3%;}
-    .lb-next { right:3%;}
-    .lb-counter { position:absolute;bottom:4%;color:#8dff95;font-size:.9rem;}
+    .archive-header .chevron { transition:transform .2s ease; }
+    .archive-header[aria-expanded="true"] .chevron { transform:rotate(180deg); }
+
+    .archive-panel {
+      max-width:800px;
+      margin:0 auto;
+      overflow:hidden;
+      transition:grid-template-rows .25s ease,opacity .25s ease;
+      display:grid;
+      grid-template-rows:0fr;
+      opacity:.6;
+    }
+
+    .archive-panel[data-open="true"] {
+      grid-template-rows:1fr;
+      opacity:1;
+    }
+
+    .archive-panel>.archive-content { overflow:hidden; }
+
+    .lpv-wrap { margin-top:.75rem; }
+
+    .lpv-strip {
+      display:flex;
+      gap:.75rem;
+      overflow-x:auto;
+      padding:.5rem;
+      scroll-snap-type:x mandatory;
+      border:1px dashed #499965;
+      background:#0a0a0a;
+    }
+
+    .lpv-card {
+      flex:0 0 auto;
+      width:260px;
+      scroll-snap-align:start;
+      position:relative;
+      border:2px solid #8dff95;
+      background:#111;
+    }
+
+    .lpv-card img {
+      width:100%;
+      height:170px;
+      object-fit:cover;
+      border:0;
+      display:block;
+    }
+
+    .lpv-caption {
+      padding:.5rem;
+      font-size:.85rem;
+      color:#cfd2d6;
+      border-top:1px solid #499965;
+    }
+
+    .lpv-hint { font-size:.8rem;color:#8dff95;margin:.4rem 0 .2rem .2rem; }
+
+    footer {
+      background-color:#111;
+      text-align:center;
+      padding:2rem;
+      font-size:.9rem;
+      border-top:2px solid #8dff95;
+      margin-top:auto;
+    }
+
+    footer a { color:#8dff95; text-decoration:none; }
   </style>
 </head>
 <body>
@@ -75,7 +191,7 @@
       <h2>November Meetup – Matthew McDougal AKA Doogie – Bluetooth Low Energy (BLE) Hacking Workshop</h2>
       <p>Date: November 21, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
       <p class="sponsor">Sponsored By: NAC-ISSA</p>
-      <img class="flyer" loading="lazy" src="images/Doogie_BLE_Hacking_Flyer.png" alt="Flyer for November 2025 BLE Hacking Workshop">
+      <img src="images/Doogie_BLE_Hacking_Flyer.png" alt="Flyer for November 2025 BLE Hacking Workshop">
     </div>
   </section>
 
@@ -86,7 +202,7 @@
     <div class="event">
       <h2>October Meetup – Hacking Fruit: Exploiting Juice Shop</h2>
       <p>Date: October 17, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-      <img class="flyer" loading="lazy" src="images/Brad Causey Juice Shop Flyer.png" alt="Flyer for October 2025 Juice Shop event">
+      <img src="images/Brad Causey Juice Shop Flyer.png" alt="Flyer for October 2025 Juice Shop event">
     </div>
 
     <div class="event" id="ncs-lpv">
@@ -108,65 +224,66 @@
     <div class="event">
       <h2>September Meetup – Lucero Huante-Frias — No Free Lateral Moves: Building Zero Trust the Hacker Way</h2>
       <p>Date: September 19, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-      <img class="flyer" loading="lazy" src="images/Lucero_Zero_Trust_Flyer.png" alt="">
+      <img src="images/Lucero_Zero_Trust_Flyer.png" alt="">
     </div>
 
     <div class="event">
       <h2>August Workshop – Jason Baird — SDR Fundamentals: A Beginner’s Guide to the HackRF</h2>
       <p>Date: August 15, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
       <p class="sponsor">Title Sponsored By: Skinny R&D</p>
-      <img class="flyer" loading="lazy" src="images/flyer-august Skinny.png" alt="">
+      <img src="images/flyer-august Skinny.png" alt="">
     </div>
 
     <div class="event">
       <h2>July Meetup – Rae Baker & Bri Benson — Attack Surface Intel: Mapping Exposures with OSINT</h2>
       <p>Date: July 18, 2025<br>Time: 6PM<br>Location: HudsonAlpha, Huntsville</p>
-      <img class="flyer" loading="lazy" src="images/OSINT_Workshop_Flyer_Final.png" alt="">
+      <img src="images/OSINT_Workshop_Flyer_Final.png" alt="">
     </div>
 
     <div class="event">
       <h2>June Meetup – Rodney Visser — Silent Intrusion: Delivering RF-Triggered Cyber Effects</h2>
       <p>Date: June 20, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-      <img class="flyer" loading="lazy" src="images/Rodney_Visser_DC256_Flyer.png" alt="">
+      <img src="images/Rodney_Visser_DC256_Flyer.png" alt="">
     </div>
 
     <div class="event">
       <h2>May Workshop – CTF Crash Course</h2>
       <p>Date: May 16, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-      <img class="flyer" loading="lazy" src="images/dayt0n_CTF_Crash_Course.png" alt="">
+      <img src="images/dayt0n_CTF_Crash_Course.png" alt="">
     </div>
 
     <div class="event">
       <h2>April Meetup – Lost in Translation: How Underlying Decompiler Architecture Shapes Malware Classification</h2>
       <p>Date: April 18, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-      <img class="flyer" loading="lazy" src="images/Lost_In_Translation_5.png" alt="">
+      <img src="images/Lost_In_Translation_5.png" alt="">
     </div>
 
     <div class="event">
       <h2>March Workshop – Learn to Lockpick (Dawson Smith)</h2>
       <p>Date: March 21, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
       <p class="sponsor">Sponsored By: Killchainz</p>
-      <img class="flyer" loading="lazy" src="images/Dooson_Lockpicking_3.png" alt="">
+      <img src="images/Dooson_Lockpicking_3.png" alt="">
     </div>
 
     <div class="event">
       <h2>February Meetup – Brad Horton — Red, Blue, Purple, Green, Pink, Rainbow</h2>
       <p>Date: February 21, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
       <p class="sponsor">Sponsored By: PeopleTec Inc</p>
-      <img class="flyer" loading="lazy" src="images/Brad_Horton_Discord.jpeg" alt="">
+      <img src="images/Brad_Horton_Discord.jpeg" alt="">
     </div>
 
     <div class="event">
       <h2>January Meetup – Paul Coggin — Space Cyber Resilience</h2>
       <p>Date: January 24, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-      <img class="flyer" loading="lazy" src="images/Paul_Coggins.png.jpeg" alt="">
+      <img src="images/Paul_Coggins.png.jpeg" alt="">
     </div>
   </section>
 
-  <!-- ARCHIVE 2024 -->
+  <!-- ARCHIVES -->
   <button class="archive-header" id="toggle-2024" aria-controls="archive-2024" aria-expanded="false">
     <h2>Archive (2024)</h2><i class="fa-solid fa-chevron-down chevron"></i>
   </button>
+
   <section class="archive-panel" id="archive-2024" data-open="false">
     <div class="archive-content">
       <section class="events-section">
@@ -200,36 +317,9 @@
     </div>
   </section>
 
-  <!-- ARCHIVE 2023 -->
-  <button class="archive-header" id="toggle-2023" aria-controls="archive-2023" aria-expanded="false">
-    <h2>Archive (2023)</h2><i class="fa-solid fa-chevron-down chevron"></i>
-  </button>
-  <section class="archive-panel" id="archive-2023" data-open="false">
-    <div class="archive-content">
-      <section class="events-section">
-        <div class="event">
-          <h2>DC256 Hacker Christmas Party</h2>
-          <p>Date: December 22, 2023<br>Location: The Monkey’s Wrench, Huntsville</p>
-          <p><em>No photo available</em></p>
-        </div>
-        <div class="event">
-          <h2>Beers & Stories with Dildog</h2>
-          <p>Date: December 1, 2023<br>Time: 7PM<br>Location: Maggie Meyers Irish Pub, Huntsville</p>
-          <img src="images/DC256_Beers_and_Stories_with_Dildog.jpg" alt="">
-          <img src="images/Beers_and_Stories_With_Dildog_Crowd.jpg" alt="">
-        </div>
-        <div class="event">
-          <h2>First DC256 Meetup</h2>
-          <p>Date: November 17, 2023<br>Location: Huntsville, AL</p>
-          <img src="images/DC256_First_Meetup.jpg" alt="">
-        </div>
-      </section>
-    </div>
-  </section>
-
-  <footer style="background-color:#111;text-align:center;padding:2rem;font-size:.9rem;border-top:2px solid #8dff95;margin-top:auto;">
+  <footer>
     <p>&copy; 2025 DC256 - Huntsville DEF CON Group | Built by hackers, for hackers.</p>
-    <p>Email us: <a href="mailto:info@dc256.org" style="color:#8dff95">info@dc256.org</a></p>
+    <p>Email us: <a href="mailto:info@dc256.org">info@dc256.org</a></p>
     <p>Meetings: 3rd Friday of each month @ 6PM — GigaParts Huntsville</p>
     <div class="socials">
       <a href="https://x.com/defcon256" target="_blank"><i class="fab fa-twitter" style="margin:0 1rem;font-size:1.5rem;color:#499965;"></i></a>
@@ -240,13 +330,20 @@
 
   <script>
     function setupArchiveToggle(id, target){
-      const b=document.getElementById(id),p=document.getElementById(target);if(!b||!p)return;
-      const t=(o)=>{const s=o!==undefined?o:p.dataset.open!=="true";p.dataset.open=s?"true":"false";b.setAttribute("aria-expanded",s?"true":"false");};
+      const b=document.getElementById(id),p=document.getElementById(target);
+      if(!b||!p)return;
+      const t=(o)=>{
+        const s=o!==undefined?o:p.dataset.open!=="true";
+        p.dataset.open=s?"true":"false";
+        b.setAttribute("aria-expanded",s?"true":"false");
+      };
       b.addEventListener("click",()=>t());
-      if(location.hash&&[("#"+target),("#"+id)].includes(location.hash)){t(true);setTimeout(()=>b.scrollIntoView({behavior:"smooth"}),50);}
+      if(location.hash&&[("#"+target),("#"+id)].includes(location.hash)){
+        t(true);
+        setTimeout(()=>b.scrollIntoView({behavior:"smooth"}),50);
+      }
     }
     setupArchiveToggle("toggle-2024","archive-2024");
-    setupArchiveToggle("toggle-2023","archive-2023");
   </script>
 </body>
 </html>
