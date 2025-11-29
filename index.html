@@ -59,8 +59,13 @@
     }
 
     @keyframes backgroundPulse {
-      0% { background-color: #0f2027; }
-      100% { background-color: #1a1a1a; }
+      0% {
+        background-color: #0f2027;
+      }
+
+      100% {
+        background-color: #1a1a1a;
+      }
     }
 
     .hero img {
@@ -137,8 +142,22 @@
       color: var(--highlight);
     }
 
-    .cursor { display: inline-block; animation: blink 1s step-end infinite; color: var(--highlight); }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    .cursor {
+      display: inline-block;
+      animation: blink 1s step-end infinite;
+      color: var(--highlight);
+    }
+
+    @keyframes blink {
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
 
     canvas.matrix {
       position: fixed;
@@ -152,16 +171,29 @@
       mask-image: linear-gradient(to bottom, transparent, black 60%);
       -webkit-mask-image: linear-gradient(to bottom, transparent, black 60%);
     }
+
     .glitch {
       color: var(--highlight);
       text-shadow: 0.05em 0 0 red, -0.05em 0 0 blue;
       animation: glitch 1s infinite;
     }
+
     @keyframes glitch {
-      0% { text-shadow: 0.05em 0 0 red, -0.05em 0 0 blue; }
-      25% { text-shadow: -0.05em 0 0 green, 0.05em 0 0 cyan; }
-      50% { text-shadow: 0.05em 0 0 yellow, -0.05em 0 0 magenta; }
-      100% { text-shadow: 0.05em 0 0 red, -0.05em 0 0 blue; }
+      0% {
+        text-shadow: 0.05em 0 0 red, -0.05em 0 0 blue;
+      }
+
+      25% {
+        text-shadow: -0.05em 0 0 green, 0.05em 0 0 cyan;
+      }
+
+      50% {
+        text-shadow: 0.05em 0 0 yellow, -0.05em 0 0 magenta;
+      }
+
+      100% {
+        text-shadow: 0.05em 0 0 red, -0.05em 0 0 blue;
+      }
     }
 
     .scanlines {
@@ -171,21 +203,25 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: repeating-linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.07) 0,
-        rgba(255, 255, 255, 0.03) 1px,
-        transparent 1px,
-        transparent 3px
-      );
+      background-image: repeating-linear-gradient(to bottom,
+          rgba(255, 255, 255, 0.07) 0,
+          rgba(255, 255, 255, 0.03) 1px,
+          transparent 1px,
+          transparent 3px);
       z-index: 1;
       mix-blend-mode: overlay;
       animation: flicker 0.4s infinite linear;
     }
 
     @keyframes flicker {
-      0%, 100% { opacity: 0.15; }
-      50% { opacity: 0.5; }
+      0%,
+      100% {
+        opacity: 0.15;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
     }
 
     /* Next Event card */
@@ -195,19 +231,24 @@
       gap: 1rem;
       align-items: start;
     }
+
     .next-event img {
       max-width: 100%;
       border: 2px solid var(--highlight);
-      box-shadow: 0 0 14px rgba(141,255,149,.3);
-      background:#000;
+      box-shadow: 0 0 14px rgba(141, 255, 149, .3);
+      background: #000;
     }
+
     .sponsor {
       color: var(--highlight);
       font-weight: bold;
       margin-top: .4rem;
     }
-    @media (max-width: 800px){
-      .next-event { grid-template-columns: 1fr; }
+
+    @media (max-width: 800px) {
+      .next-event {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -248,20 +289,29 @@
     <p>Our mission is to share knowledge, promote hands-on experimentation, and build a strong local security community. Expect workshops, lightning talks, CTFs, and general chaos.</p>
   </section>
 
-  <!-- NEXT EVENT: November 2025 BLE workshop -->
+  <!-- NEXT EVENT: Christmas Party -->
   <section class="terminal" data-aos="fade-up" id="events">
     <h2 style="color: var(--highlight);">Next Event</h2>
     <div class="next-event">
       <div>
-        <h3 style="margin-top:0;color:#cfead3;">Bluetooth Low Energy (BLE) Hacking Workshop — with Matthew "Doogie" McDougal</h3>
-        <p><strong>Date:</strong> November 21, 2025 &nbsp;•&nbsp; <strong>Time:</strong> 6PM<br>
-           <strong>Location:</strong> GigaParts Classroom, 6123 University Dr, Huntsville, AL</p>
-        <p class="sponsor">Sponsored By: NAC-ISSA</p>
-        <p>First-come, first-served hands-on BLE gear. Bring a laptop if you’ve got one. Free event & food.</p>
-        <p style="margin-top:1rem;"><a href="events.html" style="color:var(--highlight);font-weight:bold;text-decoration:none;">See full 2025 lineup →</a></p>
+        <h3 style="margin-top:0;color:#cfead3;">DC256 Christmas Party — Hacker Holiday Meetup</h3>
+        <p><strong>Date:</strong> December 19, 2025 &nbsp;•&nbsp; <strong>Time:</strong> 6–7:30PM at GigaParts<br>
+          <strong>Afterparty:</strong> 7:30PM and onward @ Field Day (next door)</p>
+
+        <p>No food provided — we’ll eat at Field Day.<br>
+          Bring lock picks, Meshtastic, ham radio gear, HackRFs, or anything cool for hacker show & tell!</p>
+
+        <p><strong>Dirty Santa Gift Exchange:</strong> Bring a fun or 3D-printed gift! 🎁</p>
+
+        <p style="margin-top:1rem;">
+          <a href="events.html" style="color:var(--highlight);font-weight:bold;text-decoration:none;">
+            See all events →
+          </a>
+        </p>
       </div>
+
       <a href="events.html" aria-label="Open events page">
-        <img src="images/Doogie_BLE_Hacking_Flyer.png" alt="Flyer: November 2025 BLE Hacking Workshop">
+        <img src="images/2025DC256ChristmasParty.jpg" alt="Flyer: DC256 Christmas Party">
       </a>
     </div>
   </section>
@@ -329,14 +379,14 @@
     const commands = {
       "whoami": "You're a hacker, tinkerer, and infosec enthusiast. Welcome home.",
       "uptime": "DC256 has been operating since 2018.",
-      "ls": "about.html  events.html  contact.html  shop/", 
+      "ls": "about.html  events.html  contact.html  shop/",
       "pwd": "/var/www/dc256",
       "cd": "Nice try. You're already in the best directory.",
       "cat flag.txt": "FLAG{R34L_H4CK3R_V1B3S}",
       "date": new Date().toString(),
       "clear": "clear",
       "help": "Try: whoami, uptime, ls, pwd, cd, cat flag.txt, \ndate, clear, help, dc256, sudo, motd, fortune, \nbanner, echo, nmap, hacktheplanet, rm -rf /, \ncontact, coffee, helpme, quote",
-      "dc256": "Next event: BLE Hacking Workshop (Doogie) — Nov 21, 2025 @ 6PM, GigaParts. Sponsored by NAC-ISSA.",
+      "dc256": "Next event: DC256 Christmas Party — Dec 19, 2025 @ 6PM, GigaParts → Field Day.",
       "sudo": "Nice try. You already have root access. 😏",
       "motd": "Welcome to the rockin' underground of Rocket City hackers. Remember: Hack the planet!",
       "fortune": "There are 10 types of people in the world: those who understand binary and those who don't.",
@@ -361,7 +411,7 @@
       "quote": "“The quieter you become, the more you are able to hear.” – Kali Linux"
     };
 
-    commandInput.addEventListener('keydown', function(e) {
+    commandInput.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') {
         const input = commandInput.value.trim();
         commandInput.value = '';
@@ -384,6 +434,7 @@
       }
     });
   </script>
+
   <script>
     // Matrix effect
     const canvas = document.querySelector('canvas.matrix');
@@ -414,71 +465,69 @@
     }
     setInterval(drawMatrix, 33);
   </script>
-  <script>
-    // Subtle Particle Grid
-    const particleCanvas = document.getElementById('particles');
-    const pCtx = particleCanvas.getContext('2d');
-    let particles = [];
 
-    function resizeParticlesCanvas() {
-      particleCanvas.width = particleCanvas.offsetWidth;
-      particleCanvas.height = particleCanvas.offsetHeight;
+  <!-- Snowfall behind hero banner -->
+  <script>
+    const snowCanvas = document.getElementById('particles');
+    const sCtx = snowCanvas.getContext('2d');
+    let flakes = [];
+
+    function resizeSnowCanvas() {
+      snowCanvas.width = snowCanvas.offsetWidth;
+      snowCanvas.height = snowCanvas.offsetHeight;
     }
 
-    function createParticles() {
-      const count = 75;
+    function createFlakes(count = 120) {
+      flakes = [];
       for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * particleCanvas.width,
-          y: Math.random() * particleCanvas.height,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3
+        flakes.push({
+          x: Math.random() * snowCanvas.width,
+          y: Math.random() * snowCanvas.height,
+          r: 1 + Math.random() * 2.5,
+          speedY: 0.5 + Math.random() * 1.5,
+          drift: (Math.random() - 0.5) * 0.6,
+          angle: Math.random() * Math.PI * 2
         });
       }
     }
 
-    function updateParticles() {
-      pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
-      for (let p of particles) {
-        p.x += p.vx;
-        p.y += p.vy;
+    function drawSnow() {
+      sCtx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
 
-        if (p.x < 0 || p.x > particleCanvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > particleCanvas.height) p.vy *= -1;
+      for (let flake of flakes) {
+        flake.y += flake.speedY;
+        flake.x += Math.sin(flake.angle) * 0.3 + flake.drift;
+        flake.angle += 0.01;
 
-        pCtx.beginPath();
-        pCtx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
-        pCtx.fillStyle = 'rgba(141, 255, 149, 0.4)';
-        pCtx.fill();
-      }
-
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          let dx = particles[i].x - particles[j].x;
-          let dy = particles[i].y - particles[j].y;
-          let dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 80) {
-            pCtx.beginPath();
-            pCtx.moveTo(particles[i].x, particles[i].y);
-            pCtx.lineTo(particles[j].x, particles[j].y);
-            pCtx.strokeStyle = 'rgba(141, 255, 149, 0.1)';
-            pCtx.stroke();
-          }
+        if (flake.y > snowCanvas.height + flake.r) {
+          flake.y = -flake.r;
+          flake.x = Math.random() * snowCanvas.width;
         }
+        if (flake.x < -flake.r) flake.x = snowCanvas.width + flake.r;
+        if (flake.x > snowCanvas.width + flake.r) flake.x = -flake.r;
+
+        sCtx.beginPath();
+        sCtx.arc(flake.x, flake.y, flake.r, 0, Math.PI * 2);
+        sCtx.fillStyle = 'rgba(255,255,255,0.85)';
+        sCtx.fill();
       }
 
-      requestAnimationFrame(updateParticles);
+      requestAnimationFrame(drawSnow);
     }
 
-    resizeParticlesCanvas();
-    createParticles();
-    updateParticles();
+    function initSnow() {
+      resizeSnowCanvas();
+      createFlakes();
+      drawSnow();
+    }
+
+    window.addEventListener('load', initSnow);
     window.addEventListener('resize', () => {
-      resizeParticlesCanvas();
-      particles = [];
-      createParticles();
+      resizeSnowCanvas();
+      createFlakes();
     });
   </script>
+
   <script>
     const bootMessages = [
       "Booting DC256 OS v3.1.4...",
@@ -504,17 +553,20 @@
       } else {
         setTimeout(() => {
           bootScreen.style.opacity = '0';
-          setTimeout(() => { bootScreen.style.display = 'none'; }, 500);
+          setTimeout(() => {
+            bootScreen.style.display = 'none';
+          }, 500);
         }, 1000);
       }
     }
+
     window.addEventListener('load', () => {
       typeBootMessage();
-      // Fallback to hide the boot screen after 7 seconds
       setTimeout(() => {
         bootScreen.style.display = 'none';
       }, 7000);
     });
   </script>
+
 </body>
 </html>
