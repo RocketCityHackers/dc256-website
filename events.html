@@ -59,16 +59,26 @@
   <section class="events-section" id="upcoming-2025">
     <h1>Upcoming Events</h1>
     <div class="event">
-      <h2>November Meetup – Matthew McDougal AKA Doogie – Bluetooth Low Energy (BLE) Hacking Workshop</h2>
-      <p>Date: November 21, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
-      <p class="sponsor">Sponsored By: NAC-ISSA</p>
-      <img src="images/Doogie_BLE_Hacking_Flyer.png" alt="Flyer for November 2025 BLE Hacking Workshop">
+      <h2>DC256 Christmas Party — Hacker Holiday Meetup</h2>
+      <p>Date: December 19, 2025<br>
+         Time: 6–7:30PM @ GigaParts, then 7:30PM and onward @ Field Day (next door)</p>
+      <p>No food provided — we’ll eat at Field Day.<br>
+         Bring lock picks, Meshtastic, ham radio gear, HackRFs, or anything cool for hacker show & tell!</p>
+      <p><strong>Dirty Santa Gift Exchange:</strong> Bring a fun or 3D-printed gift! 🎁</p>
+      <img src="images/2025DC256ChristmasParty.jpg" alt="Flyer for DC256 Christmas Party 2025">
     </div>
   </section>
 
   <!-- PREVIOUS 2025 -->
   <section class="events-section" id="previous-2025">
     <h1>Previous Events (2025)</h1>
+
+    <div class="event">
+      <h2>November Meetup – Matthew McDougal AKA Doogie – Bluetooth Low Energy (BLE) Hacking Workshop</h2>
+      <p>Date: November 21, 2025<br>Time: 6PM<br>Location: GigaParts, Huntsville</p>
+      <p class="sponsor">Sponsored By: NAC-ISSA</p>
+      <img src="images/Doogie_BLE_Hacking_Flyer.png" alt="Flyer for November 2025 BLE Hacking Workshop">
+    </div>
 
     <div class="event">
       <h2>October Meetup – Hacking Fruit: Exploiting Juice Shop</h2>
@@ -195,9 +205,9 @@
     <div class="archive-content">
       <section class="events-section">
         <div class="event">
-          <h2>DC256 Hacker Christmas Party</h2>
+          <h2>2023 DC256 Hacker Christmas Party</h2>
           <p>Date: December 22, 2023<br>Location: The Monkey’s Wrench, Huntsville</p>
-          <p><em>No photo available</em></p>
+          <img src="images/MonkeysWrenchOld.jpeg" alt="The Monkey's Wrench - DC256 Christmas Party 2023">
         </div>
         <div class="event">
           <h2>Beers & Stories with Dildog</h2>
@@ -226,10 +236,18 @@
   </footer>
 
   <script>
-    function setupArchiveToggle(id, target){const b=document.getElementById(id),p=document.getElementById(target);if(!b||!p)return;
-      const t=(o)=>{const s=o!==undefined?o:p.dataset.open!=="true";p.dataset.open=s?"true":"false";b.setAttribute("aria-expanded",s?"true":"false");};
+    function setupArchiveToggle(id, target){
+      const b=document.getElementById(id),p=document.getElementById(target);
+      if(!b||!p)return;
+      const t=(o)=>{const s=o!==undefined?o:p.dataset.open!=="true";
+        p.dataset.open=s?"true":"false";
+        b.setAttribute("aria-expanded",s?"true":"false");
+      };
       b.addEventListener("click",()=>t());
-      if(location.hash&&[("#"+target),("#"+id)].includes(location.hash)){t(true);setTimeout(()=>b.scrollIntoView({behavior:"smooth"}),50);}
+      if(location.hash&&[("#"+target),("#"+id)].includes(location.hash)){
+        t(true);
+        setTimeout(()=>b.scrollIntoView({behavior:"smooth"}),50);
+      }
     }
     setupArchiveToggle("toggle-2024","archive-2024");
     setupArchiveToggle("toggle-2023","archive-2023");
