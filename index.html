@@ -245,6 +245,16 @@
       margin-top: .4rem;
     }
 
+    .mini-link {
+      color: var(--highlight);
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .mini-link:hover {
+      text-decoration: underline;
+    }
+
     @media (max-width: 800px) {
       .next-event {
         grid-template-columns: 1fr;
@@ -289,31 +299,65 @@
     <p>Our mission is to share knowledge, promote hands-on experimentation, and build a strong local security community. Expect workshops, lightning talks, CTFs, and general chaos.</p>
   </section>
 
-  <!-- NEXT EVENT: Christmas Party -->
+  <!-- NEXT EVENT (2026): PAUL COGGIN -->
   <section class="terminal" data-aos="fade-up" id="events">
     <h2 style="color: var(--highlight);">Next Event</h2>
     <div class="next-event">
       <div>
-        <h3 style="margin-top:0;color:#cfead3;">DC256 Christmas Party — Hacker Holiday Meetup</h3>
+        <h3 style="margin-top:0;color:#cfead3;">January Meetup — Paul Coggin — Ignition Under Fire</h3>
         <p>
-          <strong>Date:</strong> December 19, 2025<br>
-          <strong>Time:</strong> 6–7:30PM at GigaParts, then 7:30PM and onward at Field Day (next door)
+          <strong>Date:</strong> Friday, January 16, 2026<br>
+          <strong>Time:</strong> 6:00 PM<br>
+          <strong>Location:</strong> GigaParts Classroom, Huntsville
         </p>
 
-        <p>No food provided — we’ll eat at Field Day.<br>
-          Bring lock picks, Meshtastic, ham radio gear, HackRFs, or anything cool for hacker show & tell!</p>
+        <p class="sponsor">
+          Sponsored by: North Alabama Chapter of the Information System Security Association (NAC-ISSA) —
+          <a class="mini-link" href="https://nac-issa.org/" target="_blank">nac-issa.org</a>
+        </p>
 
-        <p><strong>Dirty Santa Gift Exchange:</strong> Bring a fun or 3D-printed gift! 🎁</p>
+        <p>
+          The increasing reliance on digital systems in modern rocketry, from design and manufacturing to launch operations and in-flight control, introduces significant cybersecurity vulnerabilities. Presentation, "Ignition Under Fire," by Paul Coggin, explores the diverse attack vectors targeting rocket propulsion systems, examining potential consequences ranging from mission delays and data breaches to catastrophic failures. We will analyze the complex interplay of software, hardware, and network components within propulsion systems, identifying key weaknesses susceptible to exploitation. The presentation will delve into specific attack scenarios, software manipulation, sensor spoofing, and network intrusion, highlighting the potential impact on critical rocket equation parameters like delta V, thrust, fuel flow, and combustion stability. Furthermore, we will discuss the unique challenges in securing these complex systems. We will explore how a Zero Trust architecture can be implemented to enhance security by enforcing strict access control, micro-segmentation, and continuous authentication and authorization throughout the propulsion system.
+        </p>
 
         <p style="margin-top:1rem;">
-          <a href="events.html" style="color:var(--highlight);font-weight:bold;text-decoration:none;">
-            See all events →
-          </a>
+          <a href="events.html" class="mini-link">See all events →</a>
         </p>
       </div>
 
       <a href="events.html" aria-label="Open events page">
-        <img src="images/dc256ChristmasPartynew2025.jpg" alt="Flyer: DC256 Christmas Party">
+        <img src="images/Paul_Coggin_Jan_2026_Flyer_v4.png" alt="Flyer: Paul Coggin - Ignition Under Fire">
+      </a>
+    </div>
+  </section>
+
+  <!-- ALSO UPCOMING: TECH THURSDAYS -->
+  <section class="terminal" data-aos="fade-up" id="tech-thursdays">
+    <h2 style="color: var(--highlight);">Also Upcoming</h2>
+    <div class="next-event">
+      <div>
+        <h3 style="margin-top:0;color:#cfead3;">Tech Thursdays Kickoff (DC256 × NAC-ISSA) — Inside the Shark Tank: Learning Wireshark</h3>
+        <p>
+          <strong>Date:</strong> Thursday, January 15, 2026<br>
+          <strong>Time:</strong> 6:00 PM – 8:00 PM<br>
+          <strong>Location:</strong> GigaParts Classroom, Huntsville
+        </p>
+
+        <p class="sponsor">
+          Collaboration: NAC-ISSA × DC256 • Presented by: @Oyster
+        </p>
+
+        <p>
+          See inside of network traffic with the Wireshark network protocol analyzer. Pick apart packets piece by piece as we analyze networking traffic to tell a story of how different network devices talk between one another.
+        </p>
+
+        <p style="margin-top:1rem;">
+          <a href="events.html" class="mini-link">Details on Events page →</a>
+        </p>
+      </div>
+
+      <a href="events.html" aria-label="Open events page">
+        <img src="images/Tech_Thursdays_Jan_v4.png" alt="Flyer: Tech Thursdays - Inside the Shark Tank: Learning Wireshark">
       </a>
     </div>
   </section>
@@ -356,8 +400,9 @@
   </footer>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
   <script>
-    // Typing effect for header (highlights next event)
+    // Typing effect for header
     const headerText = "Welcome to DC256";
     const headerElement = document.getElementById("typingHeader");
     let charIndex = 0;
@@ -372,6 +417,7 @@
     }
     typeHeader();
   </script>
+
   <script>
     AOS.init();
 
@@ -388,7 +434,7 @@
       "date": new Date().toString(),
       "clear": "clear",
       "help": "Try: whoami, uptime, ls, pwd, cd, cat flag.txt, \ndate, clear, help, dc256, sudo, motd, fortune, \nbanner, echo, nmap, hacktheplanet, rm -rf /, \ncontact, coffee, helpme, quote",
-      "dc256": "Next event: DC256 Christmas Party — Dec 19, 2025 @ 6PM, GigaParts → Field Day.",
+      "dc256": "Next event: Paul Coggin — Ignition Under Fire — Jan 16, 2026 @ 6PM, GigaParts Classroom. Also: Tech Thursdays (Wireshark) — Jan 15, 2026 @ 6PM.",
       "sudo": "Nice try. You already have root access. 😏",
       "motd": "Welcome to the rockin' underground of Rocket City hackers. Remember: Hack the planet!",
       "fortune": "There are 10 types of people in the world: those who understand binary and those who don't.",
