@@ -29,6 +29,9 @@
     .btn.secondary:hover { box-shadow:0 0 12px rgba(73,153,101,.25);}
     .btn .fa-solid,.btn .fa-brands { font-size:1rem; }
 
+    .spoiler { color:#ff958d; }
+    .emph { color:#8df7ff; }
+
     .footer { margin-top:auto;padding:1rem 2rem;border-top:1px solid #2a2a2a;color:#6f7277;font-size:.85rem;background:#0b0b0b;}
     .footer a { color:#8dff95; }
 
@@ -81,14 +84,19 @@
             <i class="fa-solid fa-download"></i> Reverse Engineering Profile (ZIP)
           </a>
         </div>
-		<div class="btnrow">
+        <div class="btnrow">
           <a class="btn" href="https://dc256.org/tt/sg_dissector_template.lua" download>
             <i class="fa-solid fa-download"></i> Dissector Template (Lua)
           </a>
         </div>
-		<div class="btnrow">
+        <div class="btnrow">
+          <a class="btn" href="https://dc256.org/tt/sg_demo_capture.pcapng" download>
+            <i class="fa-solid fa-download"></i> SG-9337 Capture (pcapng)
+          </a>
+        </div>
+        <div class="btnrow">
           <a class="btn" href="https://dc256.org/tt/sg_dissector_full.lua" download>
-            <i class="fa-solid fa-download"></i> Spoiler! Full Dissector (Lua)
+            <i class="fa-solid fa-download"></i><span> <span class="spoiler">Spoiler!</span> Full Dissector (Lua)</span>
           </a>
         </div>
       </section>
@@ -102,8 +110,10 @@
         </div>
       </section>
     </div>
+    <div class="note" style="margin-top:1.25rem;">
+      <a href="https://docs.google.com/presentation/d/1Lgd6HkMvx4luWkNHsYLRYe7OT6R2P3xKRBMKFIDgbig/edit?usp=sharing" target="_blank" rel="noopener"><strong><span class="emph">Click here</span></strong></a> for the slides to follow along...
+    </div>
   </main>
-
   <footer class="footer">
     DC256 • <a href="../../events.html">Events</a> • <a href="../../contact.html">Contact</a>
   </footer>
