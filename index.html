@@ -260,6 +260,12 @@
         grid-template-columns: 1fr;
       }
     }
+
+    @media (max-width: 768px) {
+      #partners .partner-row {
+        transform: none !important;
+      }
+    }
   </style>
 </head>
 
@@ -386,7 +392,7 @@
       <a href="https://www.ctx-hsv.org/" target="_blank" rel="noopener noreferrer" aria-label="Visit CTX HSV website">
         <img src="images/CTX-HSV-Horizontal-MixColor@2x.png" alt="CTX HSV logo" style="max-width: 360px; width: 100%; height: auto;">
       </a>
-      <div style="display:flex; justify-content:center; align-items:center; gap:2rem; flex-wrap:wrap; transform: translateX(-30px);">
+      <div class="partner-row" style="display:flex; justify-content:center; align-items:center; gap:2rem; flex-wrap:wrap; transform: translateX(-30px);">
         <a href="https://www.uah.edu/" target="_blank" rel="noopener noreferrer" aria-label="Visit UAH website">
           <img src="images/uah.png" alt="UAH logo" style="max-width: 300px; width: 100%; height: auto;">
         </a>
