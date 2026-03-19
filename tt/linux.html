@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shell Sorcery – DC256 Tech Thursdays</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green:    #39ff14;
+      --dim:      #1aaa00;
+      --dimmer:   #0d6600;
+      --bg:       #050d05;
+      --panel:    #0a1a0a;
+      --border:   #1d4a1d;
+      --text:     #c8e6c8;
+      --amber:    #ffb300;
+      --red:      #ff3c3c;
+      --glow:     0 0 8px #39ff1480, 0 0 20px #39ff1430;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ──── scanline overlay ──── */
+    body::before {
+      content: '';
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0,0,0,.18) 3px,
+        rgba(0,0,0,.18) 4px
+      );
+      z-index: 999;
+    }
+
+    /* ──── header / nav ──── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      border-bottom: 1px solid var(--border);
+      background: #020802;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-group img {
+      height: 44px;
+      filter: drop-shadow(0 0 6px var(--green));
+    }
+
+    nav {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--dim);
+      text-decoration: none;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .85rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+    nav a:hover { color: var(--green); text-shadow: var(--glow); }
+
+    /* ──── hero ──── */
+    .hero {
+      text-align: center;
+      padding: 70px 20px 50px;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-family: 'VT323', monospace;
+      font-size: clamp(3rem, 8vw, 6rem);
+      color: var(--green);
+      text-shadow: var(--glow);
+      letter-spacing: .04em;
+      line-height: 1;
+    }
+
+    .hero .subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--dim);
+      font-size: clamp(.9rem, 2vw, 1.1rem);
+      margin-top: 14px;
+      letter-spacing: .06em;
+    }
+
+    .hero .event-meta {
+      margin-top: 20px;
+      display: inline-flex;
+      gap: 30px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .85rem;
+      color: var(--amber);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .hero .event-meta span::before { content: '▸ '; }
+
+    .cursor {
+      display: inline-block;
+      width: .5em;
+      height: 1em;
+      background: var(--green);
+      vertical-align: middle;
+      animation: blink 1s step-start infinite;
+      margin-left: 4px;
+      box-shadow: var(--glow);
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ──── main content ──── */
+    main {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    /* terminal intro block */
+    .terminal-intro {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 28px 32px;
+      margin-bottom: 48px;
+      position: relative;
+    }
+    .terminal-intro::before {
+      content: '● ● ●';
+      position: absolute;
+      top: 10px;
+      left: 14px;
+      font-size: .6rem;
+      color: var(--dimmer);
+      letter-spacing: 6px;
+    }
+    .terminal-intro p {
+      font-size: 1rem;
+      line-height: 1.75;
+      margin-top: 16px;
+      color: var(--text);
+    }
+    .terminal-intro code {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--green);
+      background: rgba(57,255,20,.08);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    /* section headings */
+    h2 {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.05rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--green);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+    }
+    h2::before { content: '// '; color: var(--dimmer); }
+
+    section { margin-bottom: 52px; }
+
+    /* card grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 22px 24px;
+      transition: border-color .25s, transform .2s;
+    }
+    .card:hover {
+      border-color: var(--green);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 24px rgba(57,255,20,.12);
+    }
+
+    .card h3 {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .95rem;
+      color: var(--green);
+      margin-bottom: 10px;
+      letter-spacing: .04em;
+    }
+    .card p {
+      font-size: .88rem;
+      line-height: 1.6;
+      color: #a0c0a0;
+      margin-bottom: 14px;
+    }
+
+    /* link buttons */
+    .btn {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .82rem;
+      color: var(--bg);
+      background: var(--green);
+      padding: 8px 18px;
+      border-radius: 3px;
+      text-decoration: none;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      transition: background .2s, box-shadow .2s;
+    }
+    .btn:hover {
+      background: #5fff40;
+      box-shadow: var(--glow);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--green);
+      border: 1px solid var(--green);
+    }
+    .btn-outline:hover {
+      background: rgba(57,255,20,.08);
+      color: var(--green);
+      box-shadow: var(--glow);
+    }
+
+    /* SSH box */
+    .ssh-box {
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 24px 28px;
+      font-family: 'Share Tech Mono', monospace;
+      margin-bottom: 16px;
+    }
+    .ssh-box .prompt {
+      color: var(--dimmer);
+      font-size: .8rem;
+      margin-bottom: 8px;
+      letter-spacing: .06em;
+    }
+    .ssh-cmd {
+      font-size: 1.15rem;
+      color: var(--green);
+      text-shadow: var(--glow);
+      word-break: break-all;
+    }
+    .ssh-note {
+      font-size: .82rem;
+      color: #6a9a6a;
+      margin-top: 10px;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    /* scoreboard embed */
+    .scoreboard-wrap {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .scoreboard-bar {
+      background: #0d2a0d;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .8rem;
+      color: var(--dim);
+    }
+    .scoreboard-bar .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: var(--glow); animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:.3; } }
+
+    .scoreboard-wrap iframe {
+      width: 100%;
+      height: 480px;
+      border: none;
+      display: block;
+    }
+
+    /* registration highlight */
+    .reg-card {
+      background: linear-gradient(135deg, #0a1f0a 0%, #0f2b0f 100%);
+      border: 1px solid var(--green);
+      border-radius: 6px;
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      box-shadow: 0 0 30px rgba(57,255,20,.07);
+    }
+    .reg-card .reg-info h3 {
+      font-family: 'VT323', monospace;
+      font-size: 1.9rem;
+      color: var(--green);
+      line-height: 1.1;
+    }
+    .reg-card .reg-info p {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .82rem;
+      color: var(--amber);
+      margin-top: 6px;
+    }
+    .reg-card .reg-info .loc {
+      color: #7ab07a;
+      margin-top: 4px;
+    }
+
+    /* tip box */
+    .tip {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      background: rgba(57,255,20,.04);
+      border-left: 3px solid var(--dim);
+      padding: 14px 18px;
+      border-radius: 0 4px 4px 0;
+      margin-top: 18px;
+      font-size: .88rem;
+      line-height: 1.65;
+      color: #a0c0a0;
+    }
+    .tip .icon { color: var(--green); font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+
+    /* footer */
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      border-top: 1px solid var(--border);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: .78rem;
+      color: var(--dimmer);
+      letter-spacing: .04em;
+    }
+    footer a { color: var(--dim); text-decoration: none; }
+    footer a:hover { color: var(--green); }
+
+    @media (max-width: 600px) {
+      header { padding: 14px 20px; flex-wrap: wrap; gap: 12px; }
+      main { padding: 0 16px 60px; }
+      .reg-card { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ──── HEADER ──── -->
+<header>
+  <div class="logo-group">
+    <img src="https://dc256.org/images/SaturnV.png" alt="DC256 Rocket" />
+    <img src="https://dc256.org/images/DC256_Text.png" alt="DC256" />
+  </div>
+  <nav>
+    <a href="https://dc256.org/index.html">Home</a>
+    <a href="https://dc256.org/about.html">About</a>
+    <a href="https://dc256.org/events.html">Events</a>
+    <a href="https://dc256.org/contact.html">Contact</a>
+    <a href="https://dc256.printify.me/products">Shop</a>
+  </nav>
+</header>
+
+<!-- ──── HERO ──── -->
+<div class="hero">
+  <h1>Shell Sorcery<span class="cursor"></span></h1>
+  <div class="subtitle">The Magic of the Linux Command Line</div>
+  <div class="event-meta">
+    <span>DC256 × NAC-ISSA Tech Thursdays</span>
+    <span>March 19, 2026 · 6:00 PM – 8:00 PM</span>
+    <span>Gigaparts · Huntsville, AL</span>
+  </div>
+</div>
+
+<!-- ──── MAIN ──── -->
+<main>
+
+  <!-- Intro -->
+  <div class="terminal-intro">
+    <p>
+      Linux isn't as scary as it seems! This crash course uses gamification to introduce you to the command line.
+      Instead of rote memorization, you'll solve logic puzzles to master the three pillars of daily Linux work:
+      <code>secure access</code>, <code>file navigation</code>, and <code>data extraction</code>.
+    </p>
+    <p style="margin-top:12px;">No prerequisite knowledge required — just an open and curious mind.</p>
+  </div>
+
+  <!-- SSH Connect -->
+  <section id="connect">
+    <h2>Connect via SSH</h2>
+    <div class="ssh-box">
+      <div class="prompt">$ open terminal or PuTTY, then type:</div>
+      <div class="ssh-cmd">ssh bandit0<span style="color:var(--red)">@</span><span style="color:var(--amber);">8.tcp.ngrok.io -p 11101</span></div>
+    </div>
+    <div class="ssh-note">
+      ▸ &nbsp;On PuTTY, only put <span style="color:var(--amber)">8.tcp.ngrok.io</span> and set the port number to <span style="color:var(--amber)">11101</span><br>
+      ▸ &nbsp;Password: <span style="color:var(--amber)">bandit0</span>
+    </div>
+    <div class="tip">
+      <span class="icon">⚡</span>
+      <span>Windows users: use PuTTY (download below). macOS &amp; Linux users: the <code>ssh</code> command is built in — open a Terminal and go!</span>
+    </div>
+  </section>
+
+  <!-- Downloads -->
+  <section id="downloads">
+    <h2>Downloads &amp; Tools</h2>
+    <div class="card-grid">
+
+      <div class="card">
+        <h3>PuTTY (Windows)</h3>
+        <p>Free open-source SSH client for Windows. Required if you don't already have an SSH terminal. Latest 64-bit installer:</p>
+        <a class="btn" href="https://the.earth.li/~sgtatham/putty/latest/w64/putty-64bit-0.83-installer.msi">
+          ⬇ Download PuTTY 0.83
+        </a>
+        <div class="tip" style="margin-top:14px;">
+          <span class="icon">💡</span>
+          <span>After install, open <code>PuTTY</code>, enter the SSH address above in "Host Name", keep port <code>22</code>, and click Open.</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Register for the Event</h3>
+        <p>Free admission — but please grab a ticket so we know how many people to expect. Hosted by NAC-ISSA.</p>
+        <a class="btn btn-outline"
+           href="https://nac-issa.org/event/tech-thursday-presents-shell-sorcery-the-magic-of-the-linux-command-line/"
+           target="_blank" rel="noopener">
+          🎟 Get Free Ticket
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Scoreboard -->
+  <section id="scoreboard">
+    <h2>Live Scoreboard</h2>
+    <div class="scoreboard-wrap">
+      <div class="scoreboard-bar">
+        <span class="dot"></span>
+        LIVE &nbsp;·&nbsp; brighton-organisation-ban-insider.trycloudflare.com
+      </div>
+      <iframe
+        src="https://brighton-organisation-ban-insider.trycloudflare.com/"
+        title="Shell Sorcery Live Scoreboard"
+        allowfullscreen
+        sandbox="allow-same-origin allow-scripts allow-forms"
+      ></iframe>
+    </div>
+    <div style="text-align:right;margin-top:10px;">
+      <a class="btn btn-outline"
+         href="https://brighton-organisation-ban-insider.trycloudflare.com/"
+         target="_blank" rel="noopener">
+        ↗ Open Full Battleship Site
+      </a>
+    </div>
+    <div class="tip" style="margin-top:14px;">
+      <span class="icon">🏆</span>
+      <span>Scores update automatically. Complete challenges on the server to climb the leaderboard!</span>
+    </div>
+  </section>
+
+  <!-- Registration card -->
+  <section id="registration">
+    <h2>Event Details</h2>
+    <div class="reg-card">
+      <div class="reg-info">
+        <h3>Shell Sorcery<br>Tech Thursday</h3>
+        <p>Thursday · March 19, 2026 · 6:00 PM – 8:00 PM CDT</p>
+        <p class="loc">📍 Gigaparts · 6123 University Drive · Huntsville, AL 35806</p>
+        <p style="margin-top:8px;color:#6a9a6a;font-size:.78rem;font-family:'Share Tech Mono',monospace;">Free · Beginner Friendly · Bring a Laptop</p>
+      </div>
+      <a class="btn"
+         href="https://nac-issa.org/event/tech-thursday-presents-shell-sorcery-the-magic-of-the-linux-command-line/"
+         target="_blank" rel="noopener"
+         style="font-size:.9rem;padding:14px 28px;">
+        Register Now →
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<!-- ──── FOOTER ──── -->
+<footer>
+  DC256 &nbsp;•&nbsp;
+  <a href="https://dc256.org/events.html">Events</a> &nbsp;•&nbsp;
+  <a href="https://dc256.org/contact.html">Contact</a>
+</footer>
+
+</body>
+</html>
