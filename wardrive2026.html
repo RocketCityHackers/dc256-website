@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wardrive Competition 2026 - DC256</title>
+  <link rel="icon" href="images/DC256_Text.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <style>
+    :root{--main-bg:#000;--primary-text:#9a9da2;--highlight:#8dff95;--accent:#499965;--border-accent:#8dff95;--gold:#ffd700;--silver:#c0c0c0;--bronze:#cd7f32}
+    body{margin:0;font-family:'Courier New',monospace;background:var(--main-bg);color:var(--primary-text);overflow-x:hidden}
+    header{background:#111;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--border-accent)}
+    header img{height:60px}
+    nav a{margin:0 1rem;color:var(--accent);text-decoration:none;font-weight:bold;transition:color .3s}
+    nav a:hover{color:var(--highlight)}
+    .terminal{background:#111;padding:2rem;margin:2rem auto;max-width:1000px;border:1px solid var(--accent);font-family:monospace;color:var(--accent);box-shadow:0 0 20px var(--border-accent)}
+    footer{background:#111;text-align:center;padding:2rem;font-size:.9rem;border-top:2px solid var(--border-accent)}
+    .socials i{margin:0 1rem;font-size:1.5rem;color:var(--accent)}
+    .socials i:hover{color:var(--highlight)}
+    h1,h2{color:var(--highlight)}
+    h3{color:#cfead3}
+
+    /* Hero */
+    .hero-banner{background:linear-gradient(135deg,#0f2027 0%,#203a43 50%,#0f2027 100%);padding:4rem 2rem;text-align:center;border-bottom:2px solid var(--accent);position:relative;overflow:hidden}
+    .hero-banner h1{font-size:3rem;color:var(--highlight);text-shadow:0 0 30px rgba(141,255,149,.4);margin:0}
+    .hero-banner .subtitle{font-size:1.2rem;color:var(--accent);margin-top:.5rem}
+    .hero-banner .stats-row{display:flex;gap:2rem;justify-content:center;margin-top:2rem;flex-wrap:wrap}
+    .hero-stat{text-align:center}
+    .hero-stat .num{font-size:2.5rem;color:var(--highlight);font-weight:bold;text-shadow:0 0 15px rgba(141,255,149,.3)}
+    .hero-stat .label{font-size:.8rem;color:var(--accent);text-transform:uppercase;letter-spacing:.15em}
+
+    /* Podium */
+    .podium{display:flex;justify-content:center;align-items:flex-end;gap:1.5rem;margin:2rem auto;max-width:700px;flex-wrap:wrap}
+    .podium-slot{text-align:center;padding:1.5rem;border:2px solid var(--accent);background:#0a0a0a;min-width:180px;position:relative}
+    .podium-slot.first{border-color:var(--gold);box-shadow:0 0 25px rgba(255,215,0,.3);order:2}
+    .podium-slot.second{border-color:var(--silver);box-shadow:0 0 15px rgba(192,192,192,.2);order:1}
+    .podium-slot.third{border-color:var(--bronze);box-shadow:0 0 15px rgba(205,127,50,.2);order:3}
+    .podium-slot .medal{font-size:2.5rem}
+    .podium-slot .place{font-size:.7rem;text-transform:uppercase;letter-spacing:.2em;margin-top:.3rem}
+    .podium-slot.first .place{color:var(--gold)}
+    .podium-slot.second .place{color:var(--silver)}
+    .podium-slot.third .place{color:var(--bronze)}
+    .podium-slot .pname{font-size:1.2rem;color:var(--highlight);font-weight:bold;margin:.5rem 0}
+    .podium-slot .handle{font-size:.85rem;color:var(--accent)}
+    .podium-slot .pts{font-size:1.5rem;color:#fff;font-weight:bold;margin-top:.5rem}
+    .podium-slot .pts span{font-size:.7rem;color:var(--accent)}
+
+    /* Leaderboard */
+    .lb-row{display:flex;align-items:center;gap:1rem;padding:.8rem 1rem;border-bottom:1px solid #222;transition:background .2s}
+    .lb-row:hover{background:rgba(141,255,149,.05)}
+    .lb-rank{width:2.5rem;text-align:center;font-weight:bold;font-size:1.1rem}
+    .lb-name{flex:1;color:var(--highlight);font-weight:bold}
+    .lb-bssids{color:var(--accent);font-size:.85rem;min-width:100px;text-align:right}
+    .lb-pts{color:#fff;font-weight:bold;font-size:1.1rem;min-width:90px;text-align:right}
+    .lb-bar{height:4px;background:var(--accent);border-radius:2px;margin-top:.3rem;transition:width .5s}
+
+    /* Awards grid */
+    .awards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:1rem}
+    .award-card{padding:1rem;border:1px solid var(--accent);background:#0a0a0a;text-align:center}
+    .award-card .icon{font-size:2rem;margin-bottom:.5rem}
+    .award-card .title{color:var(--highlight);font-weight:bold;text-transform:uppercase;font-size:.85rem;letter-spacing:.1em}
+    .award-card .recipient{color:#fff;font-size:1.1rem;font-weight:bold;margin:.4rem 0}
+    .award-card .desc{color:var(--accent);font-size:.8rem}
+
+    /* Scoring table */
+    .scoring-grid{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin:1rem 0}
+    .score-chip{padding:.4rem .8rem;border:1px solid var(--accent);background:#0a0a0a;text-align:center;font-size:.85rem}
+    .score-chip .type{color:var(--highlight);font-size:.75rem}
+    .score-chip .val{color:#fff;font-weight:bold;font-size:1.2rem}
+
+    /* Photo gallery */
+    .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-top:1rem}
+    .gallery img{width:100%;height:220px;object-fit:cover;border:2px solid var(--accent);cursor:pointer;transition:transform .2s,box-shadow .2s}
+    .gallery img:hover{transform:scale(1.02);box-shadow:0 0 20px rgba(141,255,149,.3)}
+
+    /* Stats bars */
+    .stat-bar-wrap{margin:.6rem 0}
+    .stat-bar-label{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.2rem}
+    .stat-bar-label .name{color:var(--highlight)}
+    .stat-bar-label .val{color:var(--accent)}
+    .stat-bar{height:8px;background:#1a1a1a;border-radius:4px;overflow:hidden}
+    .stat-bar-fill{height:100%;border-radius:4px;transition:width .8s}
+
+    /* Map */
+    #routeMap{height:500px;border:2px solid var(--accent);margin-top:1rem}
+
+    /* Lightbox */
+    .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.92);z-index:1000;cursor:pointer}
+    .lightbox.open{display:flex}
+    .lightbox img{max-width:92vw;max-height:85vh;border:3px solid var(--highlight)}
+
+    @media(max-width:768px){
+      .podium{flex-direction:column;align-items:center}
+      .podium-slot{order:unset!important}
+      .hero-banner h1{font-size:2rem}
+      .hero-stat .num{font-size:1.8rem}
+      nav a{margin:0 .5rem;font-size:.85rem}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="images/DC256_Text.png" alt="DC256 Logo">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="events.html">Events</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero-banner">
+    <div style="font-size:.85rem;color:var(--accent);letter-spacing:.3em;text-transform:uppercase">DC256 × I2C Huntsville</div>
+    <h1>WARDRIVE 2026</h1>
+    <div class="subtitle">April 25, 2026 — $250 in Prizes — Capture-Only Competition</div>
+    <div class="stats-row">
+      <div class="hero-stat"><div class="num">41,348</div><div class="label">Total BSSIDs</div></div>
+      <div class="hero-stat"><div class="num">6</div><div class="label">Participants</div></div>
+      <div class="hero-stat"><div class="num">50,819</div><div class="label">Sq Miles Covered</div></div>
+      <div class="hero-stat"><div class="num">71</div><div class="label">WEP Fossils Found</div></div>
+    </div>
+  </div>
+
+  <!-- PODIUM -->
+  <section class="terminal">
+    <h2>🏆 Winners</h2>
+    <div class="podium">
+      <div class="podium-slot second">
+        <div class="medal">🥈</div>
+        <div class="place">2nd Place</div>
+        <div class="pname">Frank Tysons</div>
+        <div class="handle">James</div>
+        <div class="pts">75,193 <span>pts</span></div>
+        <div style="color:var(--accent);font-size:.8rem;margin-top:.3rem">15,047 BSSIDs • 57 WEP</div>
+      </div>
+      <div class="podium-slot first">
+        <div class="medal">🥇</div>
+        <div class="place">1st Place</div>
+        <div class="pname">JT (.luckypi)</div>
+        <div class="handle">Jeff</div>
+        <div class="pts">96,445 <span>pts</span></div>
+        <div style="color:var(--accent);font-size:.8rem;margin-top:.3rem">17,540 BSSIDs • 382 on 6 GHz</div>
+      </div>
+      <div class="podium-slot third">
+        <div class="medal">🥉</div>
+        <div class="place">3rd Place — Best Rig</div>
+        <div class="pname">K3rnel5anders</div>
+        <div class="handle">KernelSanders</div>
+        <div class="pts">Most Creative Rig</div>
+        <div style="color:var(--accent);font-size:.8rem;margin-top:.3rem">2,135 BSSIDs</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FULL LEADERBOARD -->
+  <section class="terminal">
+    <h2>📊 Full Leaderboard</h2>
+    <div id="leaderboard"></div>
+  </section>
+
+  <!-- ROUTE MAP -->
+  <section class="terminal">
+    <h2>🗺️ Route Map — Where We Drove</h2>
+    <p style="color:var(--primary-text);font-size:.85rem">All 6 participants' routes overlaid on Huntsville. Click any dot to see what was captured there.</p>
+    <div id="routeMap"></div>
+  </section>
+
+  <!-- SCORING TABLE -->
+  <section class="terminal">
+    <h2>⚡ Scoring System</h2>
+    <p style="color:var(--primary-text)">Networks scored inversely — least secure = most points. Each BSSID counted once per participant.</p>
+    <div class="scoring-grid">
+      <div class="score-chip"><div class="type">WEP</div><div class="val" style="color:#ff2a6d">50</div></div>
+      <div class="score-chip"><div class="type">WPA</div><div class="val" style="color:#ff6b35">25</div></div>
+      <div class="score-chip"><div class="type">Open</div><div class="val" style="color:#ffba08">10</div></div>
+      <div class="score-chip"><div class="type">OWE</div><div class="val" style="color:#e8b405">8</div></div>
+      <div class="score-chip"><div class="type">WPA2-Personal</div><div class="val" style="color:#05d9e8">5</div></div>
+      <div class="score-chip"><div class="type">WPA3-Personal</div><div class="val" style="color:#01c38d">3</div></div>
+      <div class="score-chip"><div class="type">WPA2-Enterprise</div><div class="val" style="color:#7b61ff">2</div></div>
+      <div class="score-chip"><div class="type">WPA3-Enterprise</div><div class="val" style="color:#d1f7ff">1</div></div>
+    </div>
+  </section>
+
+  <!-- SECURITY DISTRIBUTION -->
+  <section class="terminal">
+    <h2>🔐 Security Distribution</h2>
+    <p style="color:var(--primary-text);font-size:.85rem">What Huntsville's WiFi landscape looks like — 41,348 unique networks classified.</p>
+    <div id="securityBars"></div>
+  </section>
+
+  <!-- BAND DISTRIBUTION -->
+  <section class="terminal">
+    <h2>📡 Frequency Bands</h2>
+    <div id="bandBars"></div>
+  </section>
+
+  <!-- AWARDS -->
+  <section class="terminal">
+    <h2>🎖️ Special Awards</h2>
+    <div class="awards-grid" id="awardsGrid"></div>
+  </section>
+
+  <!-- PHOTOS -->
+  <section class="terminal">
+    <h2>📸 Event Photos</h2>
+    <div class="gallery">
+      <img src="images/wardrive_group_i2c.webp" alt="DC256 group at I2C" onclick="openLightbox(this)">
+      <img src="images/wardrive_fj_cruiser.webp" alt="Wardriving rig on FJ Cruiser" onclick="openLightbox(this)">
+      <img src="images/wardrive_rig_open.jpeg" alt="Wardriving rig pelican case open" onclick="openLightbox(this)">
+      <img src="images/wardrive_rig_antennas.jpg" alt="Wardriving rig with antennas deployed" onclick="openLightbox(this)">
+      <img src="images/wardrive_scoring.webp" alt="Scoring results at I2C" onclick="openLightbox(this)">
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section class="terminal">
+    <h2>🛠️ Open Source Scoring Tool</h2>
+    <p style="color:var(--primary-text)">The scoring engine and dashboard used for this competition are open source. Supports WiGLE CSV, Kismet WiGLE CSV, and native .kismet database files.</p>
+    <p style="margin-top:1rem"><a href="https://github.com/dc256/wardrive-scorer" target="_blank" style="display:inline-block;padding:.6rem 1.5rem;background:var(--accent);color:#000;font-weight:bold;border:2px solid var(--highlight);text-decoration:none;box-shadow:0 0 10px var(--highlight);transition:transform .2s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><i class="fab fa-github"></i> View on GitHub</a></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 DC256 - Huntsville DEF CON Group | Built by hackers, for hackers.</p>
+    <p>Email: <a href="mailto:info@dc256.org" style="color:var(--highlight)">info@dc256.org</a></p>
+    <p>Meetings: 3rd Friday of each month @ 6PM — GigaParts Huntsville</p>
+    <div class="socials">
+      <a href="https://x.com/defcon256" target="_blank"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.linkedin.com/company/dc256" target="_blank"><i class="fab fa-linkedin"></i></a>
+      <a href="https://discord.gg/7DgPkkJyCH" target="_blank"><i class="fab fa-discord"></i></a>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
+    <img id="lightboxImg" src="" alt="Full size">
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script>
+    function openLightbox(img){document.getElementById('lightboxImg').src=img.src;document.getElementById('lightbox').classList.add('open')}
+    const DATA = {"competition":"Wardrive Competition","scored_at":"2026-04-25T21:01:35.967923","scoring_table":{"WEP":50,"WPA":25,"Open":10,"OWE":8,"WPA2-Personal":5,"WPA3-Personal":3,"WPA2-Enterprise":2,"WPA3-Enterprise":1},"time_window":null,"participants":[{"rank":1,"name":"Jeff","total_points":96445,"unique_bssids":17540,"total_captures":213438,"captures_in_window":213438,"captures_excluded":0,"security_breakdown":{"WPA2-Personal":15836,"Open":1689,"WPA":15},"security_points":{"WPA2-Personal":79180,"Open":16890,"WPA":375},"band_breakdown":{"2.4 GHz":5832,"5 GHz":11326,"6 GHz":382},"notable_captures":[{"bssid":"00:18:E7:C8:C7:34","ssid":"The Overlook Public Use-B","security":"WPA","points":25},{"bssid":"7C:0C:F6:08:2F:98","ssid":"Dash-5124","security":"WPA","points":25},{"bssid":"AC:8B:A9:C2:42:97","ssid":"(hidden)","security":"WPA","points":25},{"bssid":"94:83:C4:36:C6:F6","ssid":"crkems750","security":"WPA","points":25},{"bssid":"00:09:5B:C6:A5:44","ssid":"worldconspiracy","security":"WPA","points":25},{"bssid":"32:EB:1F:43:3A:EB","ssid":"Road-iQ-3FC4C","security":"WPA","points":25},{"bssid":"8A:DC:96:02:4E:E3","ssid":"StarGrocery","security":"WPA","points":25},{"bssid":"8A:DC:96:02:4E:E2","ssid":"StarGrocery","security":"WPA","points":25},{"bssid":"D8:3A:DD:6E:2F:89","ssid":"piplayer_2393","security":"WPA","points":25},{"bssid":"E4:8D:8C:3B:ED:FB","ssid":"Brooks & Assoc_MikroTik","security":"WPA","points":25}],"bounds":{"min_lat":34.720165,"max_lat":34.758057,"min_lon":-86.649788,"max_lon":-86.573776},"route":[[34.728771,-86.642403],[34.740124,-86.644508],[34.736858,-86.607574],[34.730312,-86.584503],[34.727703,-86.637459],[34.741795,-86.646065],[34.741024,-86.645798],[34.740017,-86.645737],[34.739948,-86.644699],[34.740192,-86.643898],[34.740314,-86.644173],[34.739799,-86.645477],[34.740864,-86.645645],[34.741871,-86.646027],[34.74181,-86.647514],[34.741802,-86.649231],[34.740555,-86.646469],[34.738544,-86.645569],[34.738609,-86.642921],[34.738575,-86.641273],[34.738594,-86.638954],[34.739243,-86.638245],[34.739964,-86.637505],[34.740547,-86.636566],[34.740555,-86.634941],[34.740566,-86.633072],[34.740582,-86.63102],[34.740582,-86.62899],[34.739613,-86.627708],[34.735016,-86.617805],[34.735062,-86.61335],[34.735874,-86.609779],[34.737461,-86.606255],[34.738365,-86.604202],[34.739777,-86.601158],[34.740471,-86.599625],[34.740555,-86.596298],[34.739914,-86.593864],[34.739395,-86.590332],[34.740059,-86.58918],[34.756332,-86.587929],[34.758034,-86.586121],[34.758045,-86.582588],[34.757961,-86.579346],[34.757259,-86.578285],[34.75425,-86.580521],[34.750782,-86.582428],[34.748638,-86.583359],[34.74493,-86.584557],[34.741531,-86.585289],[34.739319,-86.584717],[34.738815,-86.578293],[34.727596,-86.574265],[34.724659,-86.57402],[34.724247,-86.5812],[34.731407,-86.585251],[34.730991,-86.58725],[34.730118,-86.588875],[34.729176,-86.590599],[34.72797,-86.592896],[34.720196,-86.614693],[34.720699,-86.616905],[34.720963,-86.617958],[34.721169,-86.618637],[34.720829,-86.61969],[34.720673,-86.620895],[34.720676,-86.625679],[34.721951,-86.627586],[34.725445,-86.62751],[34.727676,-86.6371],[34.728443,-86.642387],[34.727673,-86.641472],[34.730049,-86.643532],[34.731827,-86.643745],[34.734177,-86.643867],[34.736385,-86.644058],[34.738895,-86.645988],[34.741783,-86.647423],[34.741539,-86.649734],[34.741791,-86.648552],[34.735088,-86.627144],[34.736462,-86.627274],[34.735027,-86.626694],[34.735027,-86.622566],[34.731766,-86.585594],[34.743042,-86.588898],[34.744888,-86.588814],[34.747398,-86.58857],[34.749138,-86.588531],[34.751221,-86.588493],[34.754578,-86.58844],[34.738865,-86.582115],[34.738838,-86.580231],[34.737312,-86.576889],[34.735104,-86.575661],[34.73193,-86.574593],[34.722515,-86.573853],[34.721943,-86.574333],[34.72224,-86.575325],[34.72229,-86.576744],[34.721886,-86.577866],[34.721302,-86.579704],[34.722801,-86.580528],[34.725677,-86.582253],[34.727585,-86.58371],[34.728477,-86.584396],[34.72916,-86.583809],[34.730099,-86.584282],[34.731373,-86.586487],[34.72641,-86.595779],[34.724922,-86.598656],[34.723091,-86.600754],[34.723103,-86.600868],[34.723518,-86.601303],[34.722069,-86.604179],[34.720737,-86.606735],[34.720173,-86.608757],[34.720181,-86.611298],[34.727577,-86.629593],[34.727596,-86.633362]],"map_markers":[{"lat":34.740414,"lon":-86.64579,"sec":"WPA","ssid":"The Overlook Public Use-B","auth":"[WPA-UNKNOWN-TKIP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.738617,"lon":-86.645332,"sec":"WPA","ssid":"Dash-5124","auth":"[WPA-UNKNOWN-TKIP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.73748,"lon":-86.606216,"sec":"WPA","ssid":"","auth":"[WPA-UNKNOWN-CCMP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.739826,"lon":-86.601044,"sec":"WPA","ssid":"crkems750","auth":"[WPA-UNKNOWN-CCMP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.73938,"lon":-86.589806,"sec":"WPA","ssid":"worldconspiracy","auth":"[WPA-UNKNOWN-TKIP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.739273,"lon":-86.584724,"sec":"WPA","ssid":"Road-iQ-3FC4C","auth":"[WPA-UNKNOWN-TKIP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.7388,"lon":-86.577347,"sec":"WPA","ssid":"StarGrocery","auth":"[WPA-UNKNOWN-CCMP+TKIP][ESS]","pts":25,"band":"5 GHz"},{"lat":34.738773,"lon":-86.577187,"sec":"WPA","ssid":"StarGrocery","auth":"[WPA-UNKNOWN-TKIP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.731503,"lon":-86.586258,"sec":"WPA","ssid":"piplayer_2393","auth":"[WPA-UNKNOWN-CCMP+TKIP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.731213,"lon":-86.5868,"sec":"WPA","ssid":"Brooks & Assoc_MikroTik","auth":"[WPA-UNKNOWN-CCMP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.730972,"lon":-86.587288,"sec":"WPA","ssid":"REA","auth":"[WPA-UNKNOWN-TKIP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.72723,"lon":-86.594337,"sec":"WPA","ssid":"DNX775RVS","auth":"[WPA-UNKNOWN-TKIP][ESS]","pts":25,"band":"5 GHz"},{"lat":34.723022,"lon":-86.602386,"sec":"WPA","ssid":"0614","auth":"[WPA-UNKNOWN-TKIP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.727135,"lon":-86.627502,"sec":"WPA","ssid":"crkems750","auth":"[WPA-UNKNOWN-CCMP][ESS]","pts":25,"band":"5 GHz"},{"lat":34.727242,"lon":-86.627495,"sec":"WPA","ssid":"crkems750","auth":"[WPA-UNKNOWN-CCMP][ESS]","pts":25,"band":"2.4 GHz"}]},{"rank":2,"name":"James","total_points":75193,"unique_bssids":15047,"total_captures":38718,"captures_in_window":38718,"captures_excluded":0,"security_breakdown":{"Open":1329,"WPA2-Personal":9869,"WPA2-Enterprise":1808,"Unknown":23,"WPA3-Personal":1945,"WEP":57,"WPA":8,"OWE":7,"WPA3-Enterprise":1},"security_points":{"Open":13290,"WPA2-Personal":49345,"WPA2-Enterprise":3616,"Unknown":0,"WPA3-Personal":5835,"WEP":2850,"WPA":200,"OWE":56,"WPA3-Enterprise":1},"band_breakdown":{"2.4 GHz":6910,"5 GHz":8137},"notable_captures":[{"bssid":"62:45:B7:47:85:2D","ssid":"(hidden)","security":"WEP","points":50},{"bssid":"62:45:B7:F2:65:E6","ssid":"(hidden)","security":"WEP","points":50},{"bssid":"62:45:B8:30:03:FB","ssid":"(hidden)","security":"WEP","points":50},{"bssid":"62:45:B0:4D:97:4B","ssid":"(hidden)","security":"WEP","points":50},{"bssid":"62:45:B6:D9:4E:2B","ssid":"(hidden)","security":"WEP","points":50},{"bssid":"62:45:B2:15:C8:66","ssid":"(hidden)","security":"WEP","points":50},{"bssid":"62:45:B8:22:AD:41","ssid":"(hidden)","security":"WEP","points":50},{"bssid":"62:45:BA:3A:34:FA","ssid":"(hidden)","security":"WEP","points":50},{"bssid":"62:45:B8:34:78:FD","ssid":"(hidden)","security":"WEP","points":50},{"bssid":"62:45:B8:16:D8:BE","ssid":"(hidden)","security":"WEP","points":50}],"bounds":{"min_lat":34.69088181821367,"max_lat":34.744630462125336,"min_lon":-86.64651264051061,"max_lon":-86.56995263287278},"route":[[34.72853382670649,-86.64230167203358],[34.726572106847506,-86.64241525628945],[34.723898801018215,-86.6434713128637],[34.7211337240265,-86.64426023190639],[34.71900690918469,-86.64429272468605],[34.715701823670315,-86.64398075514652],[34.713801244603324,-86.64188982410249],[34.71632216994176,-86.63811233022324],[34.71799586196577,-86.63315765059676],[34.718086752218255,-86.62940378985384],[34.71607313229807,-86.62751083259278],[34.713009475148496,-86.62703476051044],[34.71162746430774,-86.62696330850527],[34.70625380658188,-86.62714551739236],[34.70503392856414,-86.62687836837239],[34.70401060796931,-86.62675084298098],[34.70341507373783,-86.62594699271042],[34.70217362609588,-86.62602068984587],[34.7002345190714,-86.62608116603847],[34.69990989507389,-86.62717970126707],[34.702099060189816,-86.62705182126062],[34.70337238008459,-86.62699132524475],[34.703906724454605,-86.62721457447265],[34.699202907319425,-86.62732330807009],[34.69821884226329,-86.62689288470693],[34.697129871191585,-86.62507053371179],[34.69419889209171,-86.62515521555147],[34.694286892416685,-86.62399488605527],[34.69654316195916,-86.62391545354163],[34.697349741011514,-86.62504040517125],[34.69822654691228,-86.62384277633826],[34.69819315603235,-86.61919184154169],[34.696851655116156,-86.61906323472205],[34.695415877934195,-86.61913057348544],[34.6960271065529,-86.62070065913395],[34.698263141814174,-86.62042437975809],[34.69820519176583,-86.61576001942986],[34.69813184380791,-86.60998295472417],[34.698036496281915,-86.60802249390244],[34.697165072185214,-86.60705510193483],[34.697146285786665,-86.60836097202636],[34.69715053137838,-86.60660257178223],[34.69674301511718,-86.6049420421419],[34.69655784740986,-86.60457361115466],[34.69668846246036,-86.60270805063585],[34.69587141012881,-86.6017933723448],[34.6957858833052,-86.60149926712985],[34.69397286919182,-86.60153318939763],[34.693133184883884,-86.60117522131623],[34.69294741385003,-86.6014850274519],[34.69296397816234,-86.60212682789096],[34.69291400898203,-86.6016344343075],[34.69135969874566,-86.6016110956956],[34.6908860467412,-86.60283311916422],[34.691544391866806,-86.60449040098875],[34.693077077676605,-86.60471263980503],[34.69287169717382,-86.60525482865683],[34.691255744952954,-86.60468819092395],[34.690891661072214,-86.60710635434884],[34.6919026354379,-86.60968961929944],[34.693206697053796,-86.61057686446605],[34.6937989759644,-86.61044356913085],[34.695381187411066,-86.60953301453279],[34.69652178439203,-86.6083578538675],[34.69655035723915,-86.60722187028325],[34.69683774402018,-86.60935315442408],[34.6980059901877,-86.6093649257429],[34.69811245306786,-86.60565940843973],[34.6977158271582,-86.60492740657114],[34.699393719699415,-86.60402316772053],[34.700169919915396,-86.60227978836322],[34.70197696162133,-86.60046004164617],[34.70525060567688,-86.5958662809261],[34.70537773902548,-86.59037299694138],[34.70531344656573,-86.58718714611341],[34.70528415618097,-86.58331279342973],[34.705285667137254,-86.5767136262338],[34.70526891002007,-86.57089692078468],[34.70559742001024,-86.56995671189549],[34.70988274280391,-86.57265600874024],[34.71273992633597,-86.57481757403804],[34.71274880774243,-86.58000665594724],[34.71259292237059,-86.58563670806076],[34.71124847976391,-86.58992056877929],[34.71463757721662,-86.59093271442192],[34.720009141714215,-86.59252550116055],[34.7250468385673,-86.59520712188875],[34.72625206770448,-86.59603711723706],[34.72506490864653,-86.59848022446235],[34.72271137474653,-86.60291530718767],[34.71998274629595,-86.60434761962705],[34.71998501701811,-86.59843859768809],[34.720978805601455,-86.59867650557888],[34.721767796490084,-86.60089694209634],[34.72260558202242,-86.59810174231446],[34.722939583496604,-86.59849254940298],[34.72133824972569,-86.60128461778781],[34.7215753033763,-86.60316139782896],[34.721625847986274,-86.60496472840056],[34.72032303700757,-86.6074832595034],[34.720159042528266,-86.61025371280776],[34.72111244959741,-86.61188340742197],[34.722266502825974,-86.61171589566884],[34.72232301239863,-86.61321100669021],[34.72211708043486,-86.61183919909875],[34.72124320426911,-86.61172437643427],[34.72021417549741,-86.61378899274119],[34.72112448179999,-86.614175299682],[34.72050421707138,-86.61463073142319],[34.721325832509706,-86.61644288389154],[34.7209120543913,-86.61863175769156],[34.72108184553183,-86.61985320000517],[34.72593590996859,-86.61921075588116],[34.728186470587,-86.61581879970817],[34.72918119216077,-86.60983258912282],[34.7297166885062,-86.60279672130804],[34.73001024752843,-86.60011696102565],[34.73454192560175,-86.59974413193123],[34.73874891014208,-86.60288572208508],[34.73891494994733,-86.6030117293667]],"map_markers":[{"lat":34.71608206993065,"lon":-86.63871077659294,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.70217362609588,"lon":-86.62602068984587,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.70062325710807,"lon":-86.62605562572863,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.70087319653508,"lon":-86.62721810697471,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.70241891049903,"lon":-86.62699461857737,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.702596312652446,"lon":-86.62699272087575,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.69628300701637,"lon":-86.62510732149455,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.695474459698495,"lon":-86.62396589412508,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.69818177640575,"lon":-86.61273827542762,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.69806190189171,"lon":-86.60643261849022,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.69671785361747,"lon":-86.60529354196795,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.696552752320315,"lon":-86.6045672832144,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.696650884839976,"lon":-86.60187199896663,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.69620675724875,"lon":-86.6014591891592,"sec":"WEP","ssid":"Rsm47","auth":"[WEP][ESS]","pts":50,"band":"2.4 GHz"},{"lat":34.69590296329534,"lon":-86.6019707413209,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.694832734362144,"lon":-86.6015072690488,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.69457879290572,"lon":-86.60151414798607,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.69457879290572,"lon":-86.60151414798607,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.693177998439054,"lon":-86.60116924559846,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.69317053312889,"lon":-86.60118835801482,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"}]},{"rank":3,"name":"Cait","total_points":39127,"unique_bssids":7697,"total_captures":11972,"captures_in_window":11972,"captures_excluded":0,"security_breakdown":{"WPA2-Enterprise":883,"WPA2-Personal":5128,"Open":848,"WPA3-Personal":803,"WEP":14,"WPA":3,"Unknown":10,"WPA3-Enterprise":1,"OWE":7},"security_points":{"WPA2-Enterprise":1766,"WPA2-Personal":25640,"Open":8480,"WPA3-Personal":2409,"WEP":700,"WPA":75,"Unknown":0,"WPA3-Enterprise":1,"OWE":56},"band_breakdown":{"5 GHz":4462,"2.4 GHz":3226,"6 GHz":9},"notable_captures":[{"bssid":"C6:50:9C:30:66:41","ssid":"NotForYou...","security":"WEP","points":50},{"bssid":"00:18:E7:C8:C7:34","ssid":"The Overlook Public Use-B","security":"WPA","points":25},{"bssid":"62:45:B6:F4:9B:94","ssid":"(hidden)","security":"WEP","points":50},{"bssid":"62:45:B8:D5:9F:05","ssid":"(hidden)","security":"WEP","points":50},{"bssid":"00:14:D1:D6:69:88","ssid":"default_wds","security":"WEP","points":50},{"bssid":"00:19:F4:E8:04:B7","ssid":"RWS200","security":"WPA","points":25},{"bssid":"62:45:B9:06:89:07","ssid":"(hidden)","security":"WEP","points":50},{"bssid":"62:45:B7:92:DC:4F","ssid":"(hidden)","security":"WEP","points":50},{"bssid":"62:45:B8:A5:50:26","ssid":"(hidden)","security":"WEP","points":50},{"bssid":"F0:6F:CE:A0:B4:57","ssid":"(hidden)","security":"WPA3-Enterprise","points":1}],"bounds":{"min_lat":34.710052752151356,"max_lat":34.74393130609795,"min_lon":-86.68015657698892,"max_lon":-86.58415692879886},"route":[[34.72871744567886,-86.64223322768783],[34.730572404242324,-86.64350633541156],[34.7327505778425,-86.64381151611562],[34.73641943505869,-86.6439808260169],[34.739385965778816,-86.64613983673367],[34.741623354468,-86.64598699023121],[34.73998738677437,-86.64572146368374],[34.74029950788513,-86.64417479125336],[34.73929963714785,-86.64395814662525],[34.74145018149193,-86.64394624372814],[34.740860551691846,-86.64456764716199],[34.740883595802465,-86.6451294730353],[34.74188844506554,-86.64513088127894],[34.74173596496714,-86.64595113376707],[34.740912588043116,-86.64644896453301],[34.73861445439387,-86.64595400590754],[34.73589342545359,-86.64398076946165],[34.732532517500445,-86.64396571607395],[34.72845495054684,-86.64398877920038],[34.7276816504948,-86.63909177032562],[34.72756186054807,-86.63406799733023],[34.72754264864561,-86.62999216553787],[34.72751431067468,-86.62769154466712],[34.72750445448704,-86.62660963067272],[34.727484958712765,-86.62284858667985],[34.72789433051294,-86.61720678663329],[34.72845789137497,-86.61387833428113],[34.72677389257604,-86.60995573312525],[34.72079497426602,-86.60896160309886],[34.72007550233293,-86.60885059778944],[34.719948043792535,-86.60712659442049],[34.719892156756494,-86.60387320848243],[34.719882668526346,-86.60151599535239],[34.71795645612581,-86.59911162355033],[34.71668901051485,-86.60024566229855],[34.716095648514816,-86.59814086928054],[34.71940494287874,-86.5980153492877],[34.719955792236064,-86.59748036478035],[34.71997139892659,-86.5947597477848],[34.72274730176562,-86.59446133369538],[34.72639725590056,-86.59471880437238],[34.724675338724026,-86.59462683244723],[34.724943535731185,-86.59273638884767],[34.724227904245055,-86.58953203622745],[34.725790410179314,-86.58889478032498],[34.72507391173975,-86.5871424143928],[34.7247047548162,-86.58752255990335],[34.724588328359104,-86.58688105869307],[34.723073783342564,-86.58538896667683],[34.72173997810421,-86.58517478198868],[34.72299889230929,-86.5851287407019],[34.72353141677078,-86.58739700628952],[34.72361899146483,-86.58990903659502],[34.72462759383971,-86.59220749471284],[34.72597839090065,-86.59400482626913],[34.72544902937183,-86.59775199456216],[34.72350031637696,-86.5988078990976],[34.72250168870793,-86.59796337138647],[34.724451627167795,-86.59956579721714],[34.723032216488605,-86.60236535136184],[34.720948185192356,-86.60629593581874],[34.720179167054276,-86.60808524058797],[34.72018541133136,-86.60909639493492],[34.7202085953828,-86.61298193620351],[34.72138755776197,-86.61617715295523],[34.721347246019285,-86.61824567973557],[34.720914275743134,-86.62132043709636],[34.718581290432645,-86.63388495056815],[34.71667768813118,-86.63993866745449],[34.715465589446964,-86.6494651735455],[34.713832232106824,-86.65402819394133],[34.7132463787082,-86.65950585206085],[34.71326216677398,-86.66313918888702],[34.71190006395333,-86.6655337817221],[34.711333238048056,-86.66545603552436],[34.71310014214324,-86.6654834339202],[34.71277234395548,-86.66864697914754],[34.71168820943009,-86.66964398554018],[34.710707105048954,-86.66915279502294],[34.712748159153875,-86.66843891907145],[34.71332501441209,-86.66931919394543],[34.71346498602077,-86.67376902199834],[34.7134613737816,-86.67803986960735],[34.7170534349406,-86.6788312172008],[34.71782337530984,-86.67576231275852],[34.71919071531369,-86.67672371961768],[34.71986920607068,-86.67546834788327],[34.71890442867263,-86.67461917416708],[34.720564939067835,-86.67409314593748],[34.72275013246875,-86.67663550822547],[34.727296680442976,-86.67708533893686],[34.73609873946397,-86.67794031028791],[34.74018535659083,-86.67672661170818],[34.7419945509295,-86.67774877276614],[34.74393130609795,-86.67744755254024],[34.743302890191316,-86.67480264120546],[34.74239384204824,-86.67140879690379],[34.74103630018461,-86.66650699273336],[34.73989907091267,-86.66246298806729],[34.738630021392275,-86.65834019539471],[34.73782706863893,-86.65558840384406],[34.73656521170893,-86.65109602226788],[34.73578416235294,-86.64819478903846],[34.73454339750849,-86.64391511292946],[34.738351730336134,-86.64565202394627],[34.7391693188673,-86.64612228007643],[34.73994990786639,-86.6473616681922],[34.74017142621153,-86.64944078726411],[34.7401344716633,-86.64881166695976],[34.73993377242466,-86.64732657407879],[34.73939457606396,-86.64637273250881],[34.73925730508396,-86.64758064325164],[34.738958390005195,-86.64849549937026],[34.73837376593819,-86.64592913342072],[34.73530324121737,-86.64395878196689],[34.734856451203896,-86.63935873548053],[34.73427113945482,-86.63929025159123],[34.732271525212546,-86.64025108305883],[34.731100307743425,-86.63772191236158],[34.728123190267866,-86.63807305833157]],"map_markers":[{"lat":34.74067115161799,"lon":-86.64578478101157,"sec":"WEP","ssid":"NotForYou...","auth":"[WEP][ESS]","pts":50,"band":"2.4 GHz"},{"lat":34.74032438718224,"lon":-86.64577787505785,"sec":"WPA","ssid":"The Overlook Public Use-B","auth":"[WPA-PSK-TKIP][ESS][WPS]","pts":25,"band":"2.4 GHz"},{"lat":34.73974510480851,"lon":-86.64541615276208,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.74208763605144,"lon":-86.64549354316652,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.72169854343203,"lon":-86.60895083433218,"sec":"WEP","ssid":"default_wds","auth":"[WEP][ESS]","pts":50,"band":"2.4 GHz"},{"lat":34.720329774511015,"lon":-86.59252211126127,"sec":"WPA","ssid":"RWS200","auth":"[WPA-PSK-CCMP-128+TKIP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.725568307919765,"lon":-86.59416904383623,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.7256403243804,"lon":-86.58735482456687,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.72473160200226,"lon":-86.58755419632213,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.7267936018406,"lon":-86.59496404453256,"sec":"WPA3-Enterprise","ssid":"","auth":"[RSN-EAP_SUITE_B_192-GCMP-256][ESS][MFPR][MFPC]","pts":1,"band":"5 GHz"},{"lat":34.725006104346086,"lon":-86.59854023136215,"sec":"OWE","ssid":"city-guest","auth":"[RSN-OWE-CCMP-128][ESS][MFPR][MFPC]","pts":8,"band":"5 GHz"},{"lat":34.725006104346086,"lon":-86.59854023136215,"sec":"OWE","ssid":"city-guest","auth":"[RSN-OWE-CCMP-128][ESS][MFPR][MFPC]","pts":8,"band":"6 GHz"},{"lat":34.721212572596215,"lon":-86.6159679372902,"sec":"OWE","ssid":"FC-Guest","auth":"[RSN-OWE_TRANSITION-CCMP-128][ESS]","pts":8,"band":"2.4 GHz"},{"lat":34.720477840921156,"lon":-86.61817550231852,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"},{"lat":34.73991583008382,"lon":-86.66250607762991,"sec":"WPA","ssid":"ICTek2","auth":"[WPA-PSK-CCMP-128][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.736076552036344,"lon":-86.64924741112951,"sec":"OWE","ssid":"att-wifi","auth":"[RSN-OWE_TRANSITION-CCMP-128][ESS]","pts":8,"band":"5 GHz"},{"lat":34.736076552036344,"lon":-86.64924741112951,"sec":"OWE","ssid":"","auth":"[RSN-OWE-CCMP-128][RSN-OWE_TRANSITION-CCMP-128][ESS][MFPR][MFPC]","pts":8,"band":"5 GHz"},{"lat":34.736076552036344,"lon":-86.64924741112951,"sec":"OWE","ssid":"FedEx Guest Wi-Fi","auth":"[RSN-OWE_TRANSITION-CCMP-128][ESS]","pts":8,"band":"5 GHz"},{"lat":34.736076552036344,"lon":-86.64924741112951,"sec":"OWE","ssid":"","auth":"[RSN-OWE-CCMP-128][RSN-OWE_TRANSITION-CCMP-128][ESS][MFPR][MFPC]","pts":8,"band":"5 GHz"},{"lat":34.73994772354713,"lon":-86.64670573079572,"sec":"WEP","ssid":"","auth":"[WEP][ESS]","pts":50,"band":"5 GHz"}]},{"rank":4,"name":"Karissa","total_points":28245,"unique_bssids":4819,"total_captures":16060,"captures_in_window":16060,"captures_excluded":0,"security_breakdown":{"Open":826,"WPA2-Personal":3992,"WPA":1},"security_points":{"Open":8260,"WPA2-Personal":19960,"WPA":25},"band_breakdown":{"5 GHz":3851,"2.4 GHz":968},"notable_captures":[{"bssid":"A4:13:4E:83:FF:A8","ssid":"ICTek5","security":"WPA","points":25}],"bounds":{"min_lat":34.7200737,"max_lat":34.7410621643,"min_lon":-86.667427063,"max_lon":-86.5739135742},"route":[[34.7286300659,-86.6425323486],[34.7299613953,-86.6423034668],[34.7350311279,-86.6446762085],[34.7348976135,-86.6409301758],[34.7346763611,-86.6407394409],[34.7346458435,-86.6395187378],[34.7338104248,-86.6392745972],[34.7327156067,-86.6401824951],[34.7325668335,-86.6405792236],[34.73179245,-86.6417312622],[34.7312393188,-86.6401290894],[34.731716156,-86.6390838623],[34.7313346863,-86.6381759644],[34.7284011841,-86.6371765137],[34.7277641296,-86.6443099976],[34.7284011841,-86.6449432373],[34.7311973572,-86.6489868164],[34.733253479,-86.6517562866],[34.734462738,-86.6547851562],[34.7352905273,-86.6558914185],[34.7347259521,-86.6581726074],[34.7350273132,-86.661315918],[34.7350997925,-86.6624755859],[34.7342224121,-86.6630554199],[34.7341041565,-86.663192749],[34.73412323,-86.6638031006],[34.734336853,-86.6639328003],[34.7339324951,-86.6624755859],[34.7344551086,-86.6649398804],[34.7349243164,-86.6645584106],[34.7354850769,-86.6645126343],[34.7362670898,-86.6645965576],[34.7368507385,-86.6643829346],[34.7369537354,-86.6637268066],[34.7369499207,-86.6624450684],[34.7375450134,-86.6623840332],[34.7403259277,-86.6636047363],[34.7375183105,-86.6648025513],[34.7373390198,-86.6655654907],[34.7373161316,-86.6662597656],[34.7374153137,-86.6664505005],[34.7369422913,-86.6660842896],[34.736289978,-86.6661376953],[34.7360420227,-86.6659317017],[34.7362709045,-86.6661224365],[34.7373275757,-86.6661682129],[34.7373199463,-86.6669158936],[34.7374839783,-86.6672744751],[34.7392425537,-86.6672515869],[34.7400894165,-86.6664199829],[34.7406768799,-86.6648712158],[34.7349205017,-86.6313095093],[34.7394485474,-86.6017990112],[34.7377281189,-86.6555175781],[34.7368431091,-86.6522445679],[34.736114502,-86.6496353149],[34.7349395752,-86.6437454224],[34.7348098755,-86.6357727051],[34.7349205017,-86.6338500977],[34.7349243164,-86.6293869019],[34.7349815369,-86.6251754761],[34.7350921631,-86.6229400635],[34.7351036072,-86.6209259033],[34.7351379395,-86.6181182861],[34.7351493835,-86.6159820557],[34.7351150513,-86.6116333008],[34.7360610962,-86.6094207764],[34.7372131348,-86.6065979004],[34.7381477356,-86.6045227051],[34.7385826111,-86.6036071777],[34.7395629883,-86.6015548706],[34.739944458,-86.6007843018],[34.740486145,-86.6000366211],[34.7410011292,-86.5970916748],[34.7404670715,-86.5952682495],[34.7397499084,-86.5932540894],[34.739364624,-86.5904541016],[34.7388916016,-86.5855407715],[34.7397422791,-86.5816421509],[34.7403755188,-86.5815734863],[34.7404403687,-86.5805206299],[34.7402839661,-86.5796737671],[34.7400016785,-86.578704834],[34.7399482727,-86.5776367188],[34.7396812439,-86.5766220093],[34.738910675,-86.5768661499],[34.7371520996,-86.5769882202],[34.7360725403,-86.5762557983],[34.734161377,-86.5760040283],[34.7321968079,-86.5749206543],[34.7289848328,-86.5747451782],[34.7261199951,-86.5742645264],[34.7226638794,-86.5739898682],[34.7206382751,-86.5740814209],[34.7202949524,-86.5764465332],[34.7201728821,-86.5769958496],[34.7217178345,-86.5782012939],[34.7250099182,-86.5890274048],[34.7231941223,-86.5808334351],[34.724319458,-86.5816955566],[34.7236328125,-86.5833511353],[34.7227935791,-86.5826416016],[34.7221450806,-86.5820922852],[34.7210464478,-86.5800552368],[34.7233123779,-86.5819778442],[34.7229499817,-86.5824966431],[34.7205467224,-86.5837173462],[34.7220153809,-86.5841369629],[34.7225494385,-86.5840530396],[34.7227325439,-86.5837783813],[34.7237358093,-86.5837020874],[34.7237052917,-86.5864868164],[34.7240715027,-86.5874862671],[34.7231216431,-86.5875091553],[34.7224197388,-86.5903930664],[34.7238426208,-86.5894699097],[34.7246513367,-86.5891647339],[34.7252426147,-86.5887298584],[34.7241134644,-86.5875396729],[34.7237625122,-86.5866394043]],"map_markers":[{"lat":34.7399482727,"lon":-86.6625671387,"sec":"WPA","ssid":"ICTek5","auth":"[WPA-UNKNOWN-CCMP][ESS]","pts":25,"band":"5 GHz"}]},{"rank":5,"name":"Alex","total_points":19575,"unique_bssids":3581,"total_captures":8419,"captures_in_window":8419,"captures_excluded":0,"security_breakdown":{"WPA2-Personal":3262,"Open":314,"WPA":5},"security_points":{"WPA2-Personal":16310,"Open":3140,"WPA":125},"band_breakdown":{"2.4 GHz":1841,"5 GHz":1740},"notable_captures":[{"bssid":"00:90:4C:C5:12:38","ssid":"CaptionCall2_C51238","security":"WPA","points":25},{"bssid":"8A:DC:96:02:4E:E2","ssid":"StarGrocery","security":"WPA","points":25},{"bssid":"00:19:F4:E8:04:B7","ssid":"RWS200","security":"WPA","points":25},{"bssid":"00:27:22:C0:33:F9","ssid":"HUNT_LAW","security":"WPA","points":25},{"bssid":"48:65:EE:2B:FB:5F","ssid":"CaptionCall2_2BFB5F","security":"WPA","points":25}],"bounds":{"min_lat":34.7111625671,"max_lat":34.7724266052,"min_lon":-86.6441879272,"max_lon":-86.5654830933},"route":[[34.7285652161,-86.642578125],[34.7288742065,-86.6434402466],[34.728515625,-86.6434631348],[34.73487854,-86.6389160156],[34.7349433899,-86.632598877],[34.734954834,-86.627166748],[34.7349891663,-86.6234741211],[34.7350158691,-86.6188430786],[34.7350845337,-86.6131439209],[34.7361679077,-86.6091384888],[34.7383956909,-86.6042480469],[34.7389183044,-86.6032485962],[34.7424888611,-86.6054916382],[34.7456130981,-86.6082611084],[34.7493972778,-86.6100387573],[34.7515029907,-86.6109008789],[34.7564659119,-86.6125411987],[34.7601394653,-86.6123809814],[34.7626647949,-86.6088027954],[34.7632980347,-86.6049499512],[34.7618408203,-86.6049957275],[34.7615814209,-86.6023406982],[34.762928009,-86.6022186279],[34.7634048462,-86.5996627808],[34.7634124756,-86.5992736816],[34.7672080994,-86.5989227295],[34.771194458,-86.5988082886],[34.7723312378,-86.5977249146],[34.7717552185,-86.5945358276],[34.7710418701,-86.5902175903],[34.7710151672,-86.5893173218],[34.7710189819,-86.5857772827],[34.7670936584,-86.5814590454],[34.7648010254,-86.5805130005],[34.7621269226,-86.579208374],[34.7594566345,-86.5795211792],[34.7598800659,-86.580871582],[34.7591667175,-86.5823974609],[34.7594909668,-86.5846557617],[34.7600212097,-86.5862045288],[34.7581520081,-86.5871276855],[34.7555465698,-86.5883102417],[34.7515029907,-86.5885925293],[34.749382019,-86.5886306763],[34.7455978394,-86.5895233154],[34.7444114685,-86.590057373],[34.7438964844,-86.5889587402],[34.7434616089,-86.5874710083],[34.7435417175,-86.5882797241],[34.7425117493,-86.589012146],[34.7407531738,-86.5889892578],[34.7395095825,-86.5893096924],[34.7388191223,-86.5824203491],[34.7387733459,-86.5798110962],[34.7387580872,-86.5771636963],[34.7387084961,-86.5737380981],[34.7386703491,-86.5713272095],[34.7386398315,-86.5687026978],[34.7381286621,-86.5667037964],[34.7366027832,-86.566734314],[34.7364883423,-86.5655059814],[34.7355003357,-86.5655822754],[34.7355117798,-86.5670013428],[34.7355384827,-86.5684967041],[34.7355422974,-86.5699005127],[34.7355537415,-86.571472168],[34.7356033325,-86.5741882324],[34.7356491089,-86.575553894],[34.7347373962,-86.5777435303],[34.7332687378,-86.5804901123],[34.7320480347,-86.582824707],[34.7315292358,-86.5837936401],[34.7309837341,-86.5848388672],[34.7304420471,-86.5857696533],[34.7299461365,-86.5855331421],[34.7284088135,-86.5844573975],[34.7265853882,-86.5830307007],[34.7240409851,-86.5811767578],[34.7223091125,-86.580329895],[34.7198867798,-86.5801773071],[34.7200012207,-86.5879364014],[34.7200431824,-86.5912857056],[34.7189064026,-86.5924377441],[34.7139129639,-86.5914230347],[34.7112846375,-86.5935440063],[34.7113265991,-86.5982818604],[34.71144104,-86.6031723022],[34.7115364075,-86.6088562012],[34.7115631104,-86.6101455688],[34.7126541138,-86.6134490967],[34.7145233154,-86.6133041382],[34.7152862549,-86.6136779785],[34.7157478333,-86.6102218628],[34.7156639099,-86.6074752808],[34.7155990601,-86.6038742065],[34.7155456543,-86.600402832],[34.7169532776,-86.6002655029],[34.7188224792,-86.6007156372],[34.7188720703,-86.6040039062],[34.7189064026,-86.6054992676],[34.7189407349,-86.6069335938],[34.7189788818,-86.6085891724],[34.7187309265,-86.6090621948],[34.7179374695,-86.6102294922],[34.7179603577,-86.6119308472],[34.7168617249,-86.6132125854],[34.7169151306,-86.6162643433],[34.7160758972,-86.6167602539],[34.7148742676,-86.6174621582],[34.7141304016,-86.6181030273],[34.7136383057,-86.6164627075],[34.7130622864,-86.6164932251],[34.7129020691,-86.6175537109],[34.7129211426,-86.6237335205],[34.7129173279,-86.6258163452],[34.7129135132,-86.6279830933],[34.712890625,-86.6311264038],[34.714225769,-86.6350250244],[34.716129303,-86.6344451904],[34.7150878906,-86.6317520142]],"map_markers":[{"lat":34.7719764709,"lon":-86.5957565308,"sec":"WPA","ssid":"CaptionCall2_C51238","auth":"[WPA-UNKNOWN-CCMP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.7387580872,"lon":-86.5772628784,"sec":"WPA","ssid":"StarGrocery","auth":"[WPA-UNKNOWN-TKIP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.7200164795,"lon":-86.5922317505,"sec":"WPA","ssid":"RWS200","auth":"[WPA-UNKNOWN-CCMP+TKIP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.7125663757,"lon":-86.6131591797,"sec":"WPA","ssid":"HUNT_LAW","auth":"[WPA-UNKNOWN-TKIP][ESS]","pts":25,"band":"2.4 GHz"},{"lat":34.7130317688,"lon":-86.6164932251,"sec":"WPA","ssid":"CaptionCall2_2BFB5F","auth":"[WPA-UNKNOWN-CCMP][ESS]","pts":25,"band":"2.4 GHz"}]},{"rank":6,"name":"KernelSanders","total_points":1250,"unique_bssids":2135,"total_captures":7330,"captures_in_window":7330,"captures_excluded":0,"security_breakdown":{"Unknown":2010,"Open":125},"security_points":{"Unknown":0,"Open":1250},"band_breakdown":{"2.4 GHz":2128,"Unknown":7},"notable_captures":[],"bounds":{"min_lat":34.71311,"max_lat":34.743569,"min_lon":-86.714579,"max_lon":-86.585174},"route":[[34.74199,-86.711705],[34.742026,-86.711753],[34.743493,-86.710806],[34.742095,-86.711239],[34.743568,-86.711055],[34.743441,-86.712137],[34.742903,-86.710508],[34.743292,-86.710806],[34.742851,-86.71253],[34.742551,-86.712842],[34.742173,-86.714049],[34.740497,-86.71458],[34.739196,-86.714058],[34.735676,-86.71107],[34.734497,-86.70964],[34.732403,-86.708106],[34.729091,-86.706183],[34.728121,-86.703364],[34.723986,-86.69553],[34.71785,-86.691879],[34.721034,-86.683112],[34.717839,-86.680028],[34.717039,-86.679356],[34.716955,-86.67734],[34.716929,-86.676537],[34.716084,-86.675667],[34.714349,-86.675656],[34.713763,-86.675681],[34.713186,-86.674608],[34.713192,-86.67021],[34.713163,-86.666016],[34.713139,-86.663435],[34.713132,-86.662434],[34.713116,-86.661028],[34.71311,-86.659888],[34.713117,-86.657111],[34.719688,-86.653456],[34.72045,-86.654008],[34.725546,-86.656174],[34.726134,-86.655624],[34.726147,-86.653],[34.726113,-86.648809],[34.72644,-86.642308],[34.727667,-86.638871],[34.727614,-86.638156],[34.727546,-86.637193],[34.728736,-86.635316],[34.728394,-86.635327],[34.729571,-86.635307],[34.7296,-86.632601],[34.728808,-86.632262],[34.729598,-86.632441],[34.728653,-86.632261],[34.727558,-86.629899],[34.728133,-86.629926],[34.728564,-86.630021],[34.72761,-86.629952],[34.727514,-86.629257],[34.727465,-86.626038],[34.727463,-86.624696],[34.728744,-86.612215],[34.728781,-86.612003],[34.72909,-86.610172],[34.729642,-86.603916],[34.729852,-86.600284],[34.729954,-86.594747],[34.730518,-86.591694],[34.731228,-86.589082],[34.731969,-86.587406],[34.731986,-86.587378],[34.732197,-86.586982],[34.732538,-86.586314],[34.732797,-86.585781],[34.732875,-86.585635],[34.733643,-86.585527],[34.73449,-86.586492],[34.734433,-86.587245],[34.733468,-86.589483],[34.734247,-86.587885],[34.733253,-86.589852],[34.733352,-86.589713],[34.732337,-86.589747],[34.730877,-86.590502],[34.730505,-86.592426],[34.730708,-86.591385],[34.730017,-86.598358],[34.729997,-86.599858],[34.733137,-86.599924],[34.734489,-86.599711],[34.736284,-86.600891],[34.738399,-86.602585],[34.739474,-86.603351],[34.73922,-86.603172],[34.740302,-86.604006],[34.740372,-86.605045],[34.740202,-86.60546],[34.739462,-86.607146],[34.739433,-86.607212],[34.738582,-86.606803],[34.737646,-86.606083],[34.737721,-86.606189],[34.737696,-86.605681],[34.738036,-86.604443],[34.738146,-86.604294],[34.738138,-86.6043],[34.737662,-86.604151],[34.737933,-86.604329],[34.738118,-86.603798],[34.737865,-86.603659],[34.737571,-86.60214],[34.735661,-86.60056],[34.732703,-86.600281],[34.731657,-86.600618],[34.729926,-86.601392],[34.729671,-86.606165],[34.729489,-86.608045],[34.728877,-86.611885],[34.728631,-86.613325],[34.727586,-86.619555],[34.727525,-86.625014]],"map_markers":[]}],"awards":[{"title":"Fossil Hunter","icon":"\ud83e\uddb4","recipient":"James","description":"Most WEP networks captured (57)"},{"title":"Explorer","icon":"\ud83e\udded","recipient":"Jeff","description":"Most unique BSSIDs (17540)"},{"title":"Fort Knox Finder","icon":"\ud83c\udff0","recipient":"James","description":"Most WPA3-Enterprise networks (1)"},{"title":"Open Season","icon":"\ud83d\udd13","recipient":"Jeff","description":"Most Open networks captured (1689)"},{"title":"Signal Hunter","icon":"\ud83d\udce1","recipient":"Karissa","description":"Best average signal strength (-63.8 dBm)"},{"title":"High Roller","icon":"\ud83d\udcf6","recipient":"Jeff","description":"Most 5 GHz networks (11326)"},{"title":"High Frequency","icon":"\u26a1","recipient":"Jeff","description":"Most 6 GHz networks (382)"}],"global_stats":{"total_unique_bssids":41348,"security_distribution":{"WPA2-Personal":38087,"Open":5131,"WPA":32,"WPA2-Enterprise":2691,"Unknown":2043,"WPA3-Personal":2748,"WEP":71,"OWE":14,"WPA3-Enterprise":2},"band_distribution":{"2.4 GHz":20905,"5 GHz":29516,"6 GHz":391,"Unknown":7}}};
+
+    const COLORS = {WEP:"#ff2a6d",WPA:"#ff6b35",Open:"#ffba08",OWE:"#e8b405","WPA2-Personal":"#05d9e8","WPA3-Personal":"#01c38d","WPA2-Enterprise":"#7b61ff","WPA3-Enterprise":"#d1f7ff",Unknown:"#444"};
+    const PLAYER_COLORS = ["#8dff95","#ff2a6d","#05d9e8","#ffba08","#7b61ff","#ff6b35"];
+    const BAND_COLORS = {"2.4 GHz":"#ff6b35","5 GHz":"#05d9e8","6 GHz":"#01c38d"};
+    const P = DATA.participants;
+    const maxPts = Math.max(...P.map(p=>p.total_points));
+
+    // Leaderboard
+    const lb = document.getElementById('leaderboard');
+    const medals = {1:'🥇',2:'🥈',3:'🥉'};
+    P.forEach(p => {
+      const pct = (p.total_points/maxPts*100).toFixed(0);
+      lb.innerHTML += `<div class="lb-row">
+        <div class="lb-rank" style="color:${p.rank<=3?'var(--highlight)':'var(--accent)'}">${medals[p.rank]||'#'+p.rank}</div>
+        <div style="flex:1">
+          <div class="lb-name">${p.name}</div>
+          <div class="lb-bar" style="width:${pct}%;background:${PLAYER_COLORS[(p.rank-1)%PLAYER_COLORS.length]}"></div>
+        </div>
+        <div class="lb-bssids">${p.unique_bssids.toLocaleString()} BSSIDs</div>
+        <div class="lb-pts">${p.total_points.toLocaleString()} <span style="font-size:.7rem;color:var(--accent)">pts</span></div>
+      </div>`;
+    });
+
+    // Security bars
+    const secDiv = document.getElementById('securityBars');
+    const secDist = DATA.global_stats.security_distribution;
+    const secTotal = Object.values(secDist).reduce((a,b)=>a+b,0);
+    const secOrder = ["WPA2-Personal","WPA3-Personal","WPA2-Enterprise","Open","WEP","WPA","OWE","WPA3-Enterprise","Unknown"];
+    secOrder.forEach(s => {
+      const count = secDist[s]||0;
+      if(count===0) return;
+      const pct = (count/secTotal*100);
+      secDiv.innerHTML += `<div class="stat-bar-wrap">
+        <div class="stat-bar-label"><span class="name" style="color:${COLORS[s]||'#888'}">${s}</span><span class="val">${count.toLocaleString()} (${pct.toFixed(1)}%)</span></div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="width:${pct}%;background:${COLORS[s]||'#444'}"></div></div>
+      </div>`;
+    });
+
+    // Band bars
+    const bandDiv = document.getElementById('bandBars');
+    const bandDist = DATA.global_stats.band_distribution||{};
+    const bandTotal = (bandDist["2.4 GHz"]||0)+(bandDist["5 GHz"]||0)+(bandDist["6 GHz"]||0);
+    ["2.4 GHz","5 GHz","6 GHz"].forEach(b => {
+      const count = bandDist[b]||0;
+      if(count===0) return;
+      const pct = (count/bandTotal*100);
+      bandDiv.innerHTML += `<div class="stat-bar-wrap">
+        <div class="stat-bar-label"><span class="name" style="color:${BAND_COLORS[b]}">${b}</span><span class="val">${count.toLocaleString()} (${pct.toFixed(1)}%)</span></div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="width:${pct}%;background:${BAND_COLORS[b]}"></div></div>
+      </div>`;
+    });
+
+    // Awards
+    const ag = document.getElementById('awardsGrid');
+    DATA.awards.forEach(a => {
+      ag.innerHTML += `<div class="award-card"><div class="icon">${a.icon}</div><div class="title">${a.title}</div><div class="recipient">${a.recipient}</div><div class="desc">${a.description}</div></div>`;
+    });
+
+    // Map
+    const allPts = P.flatMap(p=>(p.route||[]).map(r=>[r[0],r[1]]));
+    const map = L.map('routeMap',{zoomControl:true}).setView([34.73,-86.62],12);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; CARTO &copy; OSM',maxZoom:19}).addTo(map);
+    if(allPts.length>1) map.fitBounds(L.latLngBounds(allPts).pad(0.05));
+
+    P.forEach((p,i) => {
+      const color = PLAYER_COLORS[i%PLAYER_COLORS.length];
+      if(p.route&&p.route.length>1){
+        const polyline = L.polyline(p.route.map(r=>[r[0],r[1]]),{color,weight:3,opacity:.7}).addTo(map);
+        polyline.bindPopup(`<b style="color:${color}">${p.name}</b><br>${p.unique_bssids.toLocaleString()} BSSIDs<br>${p.total_points.toLocaleString()} pts`);
+      }
+      if(p.map_markers){
+        p.map_markers.forEach(m => {
+          const lat = m.lat||m.la, lon = m.lon||m.lo, sec = m.sec||m.s, pts = m.pts||m.p;
+          const secColor = COLORS[sec]||'#888';
+          const isRare = sec==='WEP'||sec==='WPA3-Enterprise';
+          const circle = L.circleMarker([lat,lon],{radius:isRare?7:5,fillColor:secColor,color:secColor,weight:isRare?2:1,opacity:.7,fillOpacity:.8}).addTo(map);
+          const ssid = m.ssid||'(hidden)';
+          const gmaps = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
+          circle.bindPopup(`<div style="font-family:monospace;font-size:11px;min-width:160px"><b>${ssid}</b><br><span style="color:${secColor};font-weight:700">${sec}</span> — ${pts} pts${m.auth?'<br><span style="font-size:9px;color:#888">'+m.auth+'</span>':''}<br><span style="color:#888">by ${p.name}</span><br><a href="${gmaps}" target="_blank" style="color:#8dff95;font-size:10px">📍 Directions</a></div>`);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
