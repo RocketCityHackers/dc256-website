@@ -3,18 +3,10 @@
 <head>
     <meta charset="utf-8">
     <title>Redirecting...</title>
-    <script>
-        // Fri Oct 16, 2026: Rocket Secure training-day classes until 6:00 PM CDT
-        // (23:00 UTC), then that night's DC256 meetup survey.
-        var cutover = Date.parse("2026-10-16T23:00:00Z");
-        var classes = "https://forms.gle/JUY7rdBhhTXBaPdKA";  // Event Feedback: Rocket Secure 2026 -- DC256 Training Day
-        var meetup  = "https://forms.gle/y1uofp278y9FPZ5NA";  // DC256 -- Survey (October 2026)
-        window.location.replace(Date.now() >= cutover ? meetup : classes);
-    </script>
+    <!-- October 2026 DC256 meetup survey (Rocket Secure classes were cancelled) -->
+    <meta http-equiv="refresh" content="0; url=https://forms.gle/y1uofp278y9FPZ5NA">
 </head>
 <body>
-    <p>Redirecting...</p>
-    <p>If nothing happens: <a href="https://forms.gle/JUY7rdBhhTXBaPdKA">Rocket Secure class feedback</a>
-       &middot; <a href="https://forms.gle/y1uofp278y9FPZ5NA">DC256 meetup survey</a></p>
+    <p>Redirecting... <a href="https://forms.gle/y1uofp278y9FPZ5NA">Click here if not redirected.</a></p>
 </body>
 </html>
