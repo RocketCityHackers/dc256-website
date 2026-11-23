@@ -54,14 +54,25 @@
   }));
   const boot = document.getElementById('bootScreen');
   let timer;
+  let bootRunning = false;
+  const scrollShell = () => { const screen = document.getElementById('shellScreen'); if (screen) screen.scrollTop = screen.scrollHeight; };
+  document.addEventListener('shell-command', event => {
+    clearTimeout(timer);
+    if (!boot) return;
+    if (event.detail.clear) boot.textContent = '';
+    else if (bootRunning) boot.textContent = 'user@dc256:~$ boot\n' + messages.join('\n');
+    bootRunning = false;
+  });
   const messages = ['Booting DC256 OS v3.1.4...', '[OK] Initializing terminal subsystem...', '[OK] Loading DEF CON protocols...', '[OK] Establishing secure connection...', '[OK] Authenticating node...', '[OK] Mounting /home/dc256/...', '[OK] Launching hacker interface...', 'Welcome to DC256. Engage.'];
   const replay = () => {
     clearTimeout(timer);
     if (!boot) return;
-    boot.textContent = '';
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { boot.textContent = messages.join('\n'); return; }
+    document.getElementById('terminalOutput').textContent = '';
+    boot.textContent = 'user@dc256:~$ boot\n';
+    bootRunning = true;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { boot.textContent += messages.join('\n'); bootRunning = false; scrollShell(); return; }
     let i = 0;
-    const step = () => { boot.textContent += (i ? '\n' : '') + messages[i++]; if (i < messages.length) timer = setTimeout(step, 140); };
+    const step = () => { boot.textContent += (i ? '\n' : '') + messages[i++]; scrollShell(); if (i < messages.length) timer = setTimeout(step, 140); else bootRunning = false; };
     step();
   };
   document.getElementById('replayBoot')?.addEventListener('click', replay);
