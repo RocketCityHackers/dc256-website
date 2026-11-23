@@ -21,7 +21,10 @@
     restore.forEach(([element, inert]) => element.inert = inert);
     overlay?.remove();
     document.removeEventListener('keydown', onKey);
-    if (overlay) document.querySelector('header .site-brand')?.focus({preventScroll:true});
+    if (overlay) {
+      const main = document.querySelector('main');
+      if (main) { main.tabIndex = -1; main.focus({preventScroll:true}); }
+    }
   };
   const onKey = event => {
     if (event.key === 'Escape') { event.preventDefault(); finish(); }

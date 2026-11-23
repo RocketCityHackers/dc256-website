@@ -1,5 +1,5 @@
 (() => {
-  const root = new URL('../', document.currentScript.src);
+  const root = new URL('../', document.currentScript?.src || new URL('scripts/events.js', document.baseURI));
   const formatDate = value => new Intl.DateTimeFormat('en-US', {timeZone:'America/Chicago', weekday:'long', year:'numeric', month:'long', day:'numeric'}).format(new Date(value));
   const formatTime = value => new Intl.DateTimeFormat('en-US', {timeZone:'America/Chicago', hour:'numeric', minute:'2-digit', timeZoneName:'short'}).format(new Date(value));
   const load = async () => {

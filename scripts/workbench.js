@@ -55,7 +55,7 @@
   const boot = document.getElementById('bootScreen');
   let timer;
   let bootRunning = false;
-  const scrollShell = () => { const screen = document.getElementById('shellScreen'); if (screen) screen.scrollTop = screen.scrollHeight; };
+  const scrollShell = () => window.scrollShellToLatest?.();
   document.addEventListener('shell-command', event => {
     clearTimeout(timer);
     if (!boot) return;
