@@ -1,5 +1,11 @@
 (() => {
   const apps = {
+    trash:{title:'Deleted Ideas',icon:'trash',template:'trashContent',width:520,height:580,x:380,y:80},
+    usb:{title:'Suspicious USB',icon:'folder',template:'usbContent',width:520,height:580,x:380,y:80},
+    tasks:{title:'Task Manager',icon:'terminal',template:'tasksContent',width:720,height:540,x:380,y:80},
+    notes:{title:'Sticky Notes',icon:'note',template:'notesContent',width:340,height:360,x:380,y:80},
+    system:{title:'About This Computer',icon:'globe',template:'systemContent',width:520,height:580,x:380,y:80},
+
     welcome:{title:'Welcome to DC256',icon:'folder',template:'welcomeContent',width:650,height:610,x:155,y:58},
     terminal:{title:'user@dc256:~ — Terminal',icon:'terminal',url:'classic.html?desktop=terminal',width:590,height:390,x:765,y:220},
     events:{title:'Events — Community browser',icon:'calendar',url:'events.html',width:820,height:600,x:240,y:70},
@@ -19,19 +25,21 @@
     windows.forEach((item,key) => { item.element.classList.toggle('active',key===id); item.task.setAttribute('aria-pressed',String(key===id)); });
   };
   const minimize = id => { const state=windows.get(id); state.element.hidden=true; state.task.setAttribute('aria-pressed','false'); if(active===id)active=null; };
-  const close = id => {const state=windows.get(id);state.element.remove();state.task.remove();windows.delete(id);if(active===id)active=null;};
+  const close = id => {const state=windows.get(id);state.cleanup?.();state.element.remove();state.task.remove();windows.delete(id);if(active===id)active=null;};
   const maximize = id => { const state=windows.get(id); const on=state.element.classList.toggle('maximized');state.element.querySelector('[data-action="maximize"]').setAttribute('aria-label',on?'Restore window':'Maximize window');focus(id); };
   const open = id => {
     if (!apps[id]) return;
     if(windows.has(id)){focus(id);return;}
     const app=apps[id];
     const element=document.createElement('section'); element.className='os-window';element.dataset.app=id;
+    if (id === 'notes') element.classList.add('sticky-widget');
     element.setAttribute('role','region');element.setAttribute('aria-label',app.title);
     const x=Math.min(app.x,Math.max(8,innerWidth-app.width-20));const y=Math.min(app.y,Math.max(8,innerHeight-app.height-100));
     Object.assign(element.style,{left:x+'px',top:y+'px',width:app.width+'px',height:app.height+'px'});
     element.innerHTML=`<div class="os-titlebar"><div class="window-title">${icon(app.icon)}<span>${app.title}</span></div><div class="window-controls"><button data-action="minimize" aria-label="Minimize window">_</button><button data-action="maximize" aria-label="Maximize window">□</button><button data-action="close" aria-label="Close window">×</button></div></div><div class="os-window-body"></div><div class="window-status"><span>${id==='terminal'?'LOCAL SHELL / TYPE HELP TO EXPLORE':'DC256 OS / '+id.toUpperCase()}</span><span>◢</span></div>`;
     const body=element.querySelector('.os-window-body');
-    if(app.template)body.append(document.getElementById(app.template).content.cloneNode(true));
+    if(app.mount) {}
+    else if(app.template)body.append(document.getElementById(app.template).content.cloneNode(true));
     else {
       const frame=document.createElement('iframe');frame.src=app.url;frame.title=app.title;
       frame.addEventListener('load', () => {
@@ -66,6 +74,7 @@
     const task=document.createElement('button');task.innerHTML=icon(app.icon)+`<span>${id==='welcome'?'Start here':id[0].toUpperCase()+id.slice(1)}</span>`;task.title=app.title;
     task.addEventListener('click',()=>{if(!element.hidden&&active===id)minimize(id);else focus(id);});tasks.append(task);
     windows.set(id,{element,task});layer.append(element);
+    windows.get(id).cleanup = app.mount ? app.mount(body) : window.initDesktopFun?.(body);
     element.addEventListener('pointerdown',()=>focus(id));
     element.querySelectorAll('[data-action]').forEach(button=>button.addEventListener('click',()=>({minimize,maximize,close})[button.dataset.action](id)));
     const bar=element.querySelector('.os-titlebar');
@@ -81,6 +90,11 @@
     });
     focus(id);
     document.getElementById('announcement').textContent=app.title+' opened';
+  };
+  window.openDesktopPopup = ({id,title,mount,width=560,height=440,icon='folder'}) => {
+    const key='popup-'+id;
+    apps[key]={title,icon,mount,width,height,x:440,y:115};
+    open(key);
   };
   const launcher=document.getElementById('launcher'),start=document.getElementById('startButton');
   const hideLauncher=()=>{launcher.hidden=true;start.setAttribute('aria-expanded','false');};
