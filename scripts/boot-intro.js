@@ -1,4 +1,5 @@
 (() => {
+  if (new URLSearchParams(location.search).has('desktop')) return;
   const key = 'dc256:last-fullscreen-boot';
   const cooldown = 30 * 60 * 1000;
   const now = Date.now();

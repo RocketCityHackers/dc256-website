@@ -1,4 +1,5 @@
 (() => {
+  if (new URLSearchParams(location.search).get('desktop') === 'terminal') document.body.classList.add('desktop-terminal');
   const header = document.querySelector('header');
   const nav = header?.querySelector('nav');
   if (nav) {

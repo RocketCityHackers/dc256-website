@@ -22,3 +22,5 @@
 
 main[tabindex="-1"]:focus{outline:none}
 .shell-screen{overflow-anchor:none;scroll-behavior:auto}
+
+body.desktop-terminal{background:#0a1113!important;overflow:hidden}body.desktop-terminal>header,body.desktop-terminal>footer,body.desktop-terminal>.skip-link{display:none!important}.desktop-terminal main{max-width:none;padding:0!important;margin:0!important}.desktop-terminal main>*:not(.community-grid),.desktop-terminal .community-grid>*:not(#shell){display:none!important}.desktop-terminal .community-grid{display:block}.desktop-terminal #shell{margin:0!important;border:0;border-radius:0;height:100dvh;display:flex;flex-direction:column}.desktop-terminal #shell>.window-bar{display:none}.desktop-terminal .shell-screen{flex:1;min-height:0;max-height:none}.desktop-terminal .command-chips{margin:.65rem 1rem!important;padding-top:.6rem;flex-shrink:0;font-size:.7rem}.desktop-terminal .command-chips>span{display:none}.desktop-terminal .command-chips button{min-height:32px;padding:.35rem .6rem}

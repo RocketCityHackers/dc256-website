@@ -2,7 +2,7 @@
 from pathlib import Path
 import re
 ROOT = Path(__file__).resolve().parent.parent
-PAGES = ['index.html', 'about.html', 'events.html', 'contact.html', 'wardrive2026.html', 'tt/linux.html', 'tt/wireshark.html', 'tt/dissectors.html']
+PAGES = ['classic.html', 'about.html', 'events.html', 'contact.html', 'wardrive2026.html', 'tt/linux.html', 'tt/wireshark.html', 'tt/dissectors.html']
 LINKS = [('Home','index.html'),('About','about.html'),('Events','events.html'),('Contact','contact.html'),('Wardrive 2026','wardrive2026.html')]
 for name in PAGES:
     path = ROOT / name
