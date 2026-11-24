@@ -32,7 +32,37 @@
     element.innerHTML=`<div class="os-titlebar"><div class="window-title">${icon(app.icon)}<span>${app.title}</span></div><div class="window-controls"><button data-action="minimize" aria-label="Minimize window">_</button><button data-action="maximize" aria-label="Maximize window">□</button><button data-action="close" aria-label="Close window">×</button></div></div><div class="os-window-body"></div><div class="window-status"><span>${id==='terminal'?'LOCAL SHELL / TYPE HELP TO EXPLORE':'DC256 OS / '+id.toUpperCase()}</span><span>◢</span></div>`;
     const body=element.querySelector('.os-window-body');
     if(app.template)body.append(document.getElementById(app.template).content.cloneNode(true));
-    else { const frame=document.createElement('iframe');frame.src=app.url;frame.title=app.title;body.append(frame); }
+    else {
+      const frame=document.createElement('iframe');frame.src=app.url;frame.title=app.title;
+      frame.addEventListener('load', () => {
+        try {
+          const frameDocument = frame.contentDocument;
+          const homePath = new URL('index.html', document.baseURI).pathname;
+          frameDocument.querySelectorAll('header nav a').forEach(link => {
+            const url = new URL(link.href, frameDocument.baseURI);
+            const isShop = /^(shop\.dc256\.org|dc256\.printify\.me)$/.test(url.hostname) || link.textContent.trim().toLowerCase() === 'shop';
+            if ((url.origin === location.origin && url.pathname === homePath) || isShop) link.hidden = true;
+          });
+          const style = frameDocument.createElement('style');
+          style.textContent = 'header nav a[hidden]{display:none!important}';
+          frameDocument.head.append(style);
+          frame.contentDocument.addEventListener('click', event => {
+            const link = event.target.closest('a[href]');
+            if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || link.target === '_blank') return;
+            const url = new URL(link.href, frame.contentDocument.baseURI);
+            const home = new URL('index.html', document.baseURI);
+            const desktop = new URL('desktop.html', document.baseURI);
+            const directory = new URL('./', document.baseURI);
+            if (url.origin === location.origin && [home.pathname, desktop.pathname, directory.pathname].includes(url.pathname)) {
+              event.preventDefault();
+              minimize(id);
+              open('welcome');
+            }
+          });
+        } catch (_) { /* Cross-origin destinations retain their own navigation. */ }
+      });
+      body.append(frame);
+    }
     const task=document.createElement('button');task.innerHTML=icon(app.icon)+`<span>${id==='welcome'?'Start here':id[0].toUpperCase()+id.slice(1)}</span>`;task.title=app.title;
     task.addEventListener('click',()=>{if(!element.hidden&&active===id)minimize(id);else focus(id);});tasks.append(task);
     windows.set(id,{element,task});layer.append(element);
