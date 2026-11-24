@@ -4,7 +4,7 @@
     terminal:{title:'user@dc256:~ — Terminal',icon:'terminal',url:'classic.html?desktop=terminal',width:590,height:390,x:765,y:220},
     events:{title:'Events — Community browser',icon:'calendar',url:'events.html',width:820,height:600,x:240,y:70},
     about:{title:'About DC256 — Community browser',icon:'globe',url:'about.html',width:800,height:600,x:280,y:90},
-    wardrive:{title:'Wardrive 2026 — Results',icon:'radio',url:'wardrive2026.html',width:880,height:620,x:200,y:60},
+    wardrive:{title:'Wardrive 2026 — Results',icon:'radio',url:'wardrive2026.html?v=carto-2',width:880,height:620,x:200,y:60},
     contact:{title:'Contact — Open a connection',icon:'mail',url:'contact.html',width:760,height:580,x:300,y:110},
     links:{title:'Connections — Community links',icon:'globe',template:'linksContent',width:480,height:520,x:600,y:90}
   };

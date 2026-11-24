@@ -289,7 +289,7 @@
     // Map
     const allPts = P.flatMap(p=>(p.route||[]).map(r=>[r[0],r[1]]));
     const map = L.map('routeMap',{zoomControl:true}).setView([34.73,-86.62],12);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{attribution:'&copy; CARTO &copy; OSM',maxZoom:19}).addTo(map);
+    L.tileLayer('https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png?key=cb1_5evq_1_310567bdf13d47af97806267',{attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',maxZoom:19}).addTo(map);
     if(allPts.length>1) map.fitBounds(L.latLngBounds(allPts).pad(0.05));
 
     P.forEach((p,i) => {
